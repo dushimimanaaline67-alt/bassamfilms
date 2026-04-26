@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASSAM FILMS | Download & Stream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+        
+        body { background-color: #0a0a0a; color: white; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .page { display: none; }
+        .active { display: block; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .movie-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .movie-card:hover { transform: translateY(-10px); z-index: 10; }
+        .movie-card img { transition: 0.5s ease; }
+        .movie-card:hover img { filter: brightness(0.4) scale(1.1); }
+
+        .glass { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+        .red-gradient { background: linear-gradient(45deg, #e50914, #ff4d4d); }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-[100] px-8 py-5 flex justify-between items-center glass border-b border-white/5">
+        <div onclick="showPage('home')" class="flex items-center gap-2 cursor-pointer group">
+            <div class="bg-red-600 p-1 rounded-md group-hover:rotate-12 transition">
+                <i class="fa fa-play text-white text-xs"></i>
+            </div>
+            <h1 class="text-red-600 text-2xl font-black tracking-tighter uppercase italic">BASSAM</h1>
+        </div>
+        <div class="flex items-center gap-8">
+            <button onclick="showPage('home')" class="hover:text-red-500 font-bold text-sm uppercase transition">Home</button>
+            <button onclick="showPage('login')" class="red-gradient px-6 py-2 rounded-lg text-xs font-black shadow-lg shadow-red-600/30">ADMIN</button>
+        </div>
+    </nav>
+
+    <section id="page-home" class="page active pt-28 min-h-screen">
+        <div class="px-8 mb-12">
+            <div class="h-[400px] w-full rounded-[2.5rem] bg-[url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2025')] bg-cover bg-center flex items-end p-12 relative overflow-hidden shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                <div class="relative z-10">
+                    <h2 class="text-5xl font-black mb-2">BASSAM <span class="text-red-600">MOVIES</span></h2>
+                    <p class="text-gray-300 max-w-lg">Sura, Reba, cyangwa Imanure (Download) filime nshya zigezweho mu buryo bwa HD.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-8 pb-24">
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="text-2xl font-black border-l-4 border-red-600 pl-4 uppercase">Filime Ziriho</h3>
+                <input type="text" id="search" oninput="searchMovies()" placeholder="Shaka hano..." class="bg-zinc-900 border border-zinc-800 px-6 py-3 rounded-2xl outline-none focus:border-red-600 w-64 text-sm transition">
+            </div>
+            <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"></div>
+        </div>
+    </section>
+
+    <section id="page-login" class="page pt-52 h-screen">
+        <div class="max-w-md mx-auto glass p-12 rounded-[3rem] shadow-2xl text-center">
+            <h2 class="text-3xl font-black mb-8 italic">ADMIN LOGIN</h2>
+            <div class="space-y-4">
+                <input type="text" id="userIn" placeholder="Username" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-red-600">
+                <input type="password" id="passIn" placeholder="Password" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-red-600">
+                <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-2xl font-black shadow-xl shadow-red-600/20">INJIRA</button>
+                <p id="loginError" class="text-red-500 text-xs font-bold"></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-admin" class="page pt-32 px-8 min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-black italic">ADMIN PANEL</h2>
+                <button onclick="logout()" class="bg-zinc-800 px-6 py-2 rounded-xl text-xs font-bold uppercase">Logout</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="glass p-8 rounded-[2.5rem] space-y-4 h-fit">
+                    <h3 class="font-black text-sm uppercase text-red-500 mb-4">Ongeramo Filime</h3>
+                    <input type="text" id="mTitle" placeholder="Izina rya Movie" class="w-full bg-black border border-zinc-800 p-4 rounded-xl outline-none text-sm">
+                    <input type="text" id="mYear" placeholder="Umwaka (2026)" class="w-full bg-black border border-zinc-800 p-4 rounded-xl outline-none text-sm">
+                    <input type="text" id="mLink" placeholder="Link yo Kureba (Online)" class="w-full bg-black border border-zinc-800 p-4 rounded-xl outline-none text-sm">
+                    <input type="text" id="mDL" placeholder="Link yo ku-Download" class="w-full bg-black border border-zinc-800 p-4 rounded-xl outline-none text-sm">
+                    
+                    <div class="p-4 border-2 border-dashed border-zinc-800 rounded-xl text-center relative">
+                        <input type="file" id="mFile" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                        <p class="text-[10px] text-gray-500 font-bold uppercase">Hitamo Ifoto</p>
+                    </div>
+                    
+                    <button onclick="saveMovie()" class="w-full red-gradient py-4 rounded-xl font-black text-sm shadow-lg shadow-red-600/20">SAVE MOVIE</button>
+                </div>
+
+                <div class="lg:col-span-2 space-y-4">
+                    <div id="adminMovieList" class="grid gap-3"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let movies = JSON.parse(localStorage.getItem('bassam_database')) || [];
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page-${id}`).classList.add('active');
+            if(id === 'home') renderHome();
+            if(id === 'admin') renderAdmin();
+            window.scrollTo(0,0);
+        }
+
+        function handleLogin() {
+            const u = document.getElementById('userIn').value;
+            const p = document.getElementById('passIn').value;
+            if(u === "bassam" && p === "54321") {
+                sessionStorage.setItem('isBassam', 'true');
+                showPage('admin');
+            } else {
+                document.getElementById('loginError').innerText = "Username cyangwa Password ntabwo ariyo!";
+            }
+        }
+
+        function logout() { sessionStorage.clear(); location.reload(); }
+
+        function saveMovie() {
+            const title = document.getElementById('mTitle').value;
+            const year = document.getElementById('mYear').value;
+            const link = document.getElementById('mLink').value;
+            const download = document.getElementById('mDL').value; // Download link
+            const fileInput = document.getElementById('mFile');
+
+            if(!title || !link || !download || !fileInput.files[0]) return alert("Uzuza byose!");
+
+            const reader = new FileReader();
+            reader.readAsDataURL(fileInput.files[0]);
+            reader.onload = function() {
+                const newMovie = { id: Date.now(), title, year, link, download, poster: reader.result };
+                movies.unshift(newMovie);
+                localStorage.setItem('bassam_database', JSON.stringify(movies));
+                location.reload();
+            }
+        }
+
+        function deleteMovie(id) {
+            if(confirm("Ushaka kuyisiba?")) {
+                movies = movies.filter(m => m.id !== id);
+                localStorage.setItem('bassam_database', JSON.stringify(movies));
+                renderAdmin();
+            }
+        }
+
+        function renderHome() {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = movies.map(m => `
+                <div class="movie-card group">
+                    <div class="relative overflow-hidden rounded-[2rem] aspect-[2/3] shadow-2xl bg-zinc-900">
+                        <img src="${m.poster}" class="w-full h-full object-cover">
+                        
+                        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <a href="${m.link}" target="_blank" class="bg-red-600 h-14 w-14 rounded-full flex items-center justify-center shadow-2xl scale-50 group-hover:scale-100 transition transform hover:bg-red-700">
+                                <i class="fa fa-play text-white text-xl ml-1"></i>
+                            </a>
+                            <a href="${m.download}" target="_blank" class="bg-white/20 backdrop-blur-md border border-white/30 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black uppercase tracking-tighter hover:bg-white hover:text-black transition transform translate-y-4 group-hover:translate-y-0">
+                                <i class="fa fa-download"></i> DOWNLOAD
+                            </a>
+                        </div>
+
+                        <div class="absolute top-4 left-4 bg-red-600 px-2 py-0.5 rounded text-[8px] font-black uppercase">New</div>
+                    </div>
+                    <div class="mt-3 px-1">
+                        <h4 class="font-black text-[13px] truncate uppercase tracking-tighter group-hover:text-red-500 transition">${m.title}</h4>
+                        <p class="text-[10px] text-gray-500 font-bold">${m.year}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAdmin() {
+            const list = document.getElementById('adminMovieList');
+            list.innerHTML = movies.map(m => `
+                <div class="flex items-center justify-between glass p-4 rounded-2xl">
+                    <div class="flex items-center gap-4">
+                        <img src="${m.poster}" class="h-12 w-10 rounded-lg object-cover">
+                        <div>
+                            <p class="font-black text-sm uppercase">${m.title}</p>
+                            <p class="text-[10px] text-red-500 font-bold italic">Link: ${m.link.substring(0,20)}...</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteMovie(${m.id})" class="text-red-500 hover:bg-red-500/10 p-3 rounded-xl transition">
+                        <i class="fa fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function searchMovies() {
+            const term = document.getElementById('search').value.toLowerCase();
+            const filtered = movies.filter(m => m.title.toLowerCase().includes(term));
+            // Reuse grid rendering logic for search
+            document.getElementById('movieGrid').innerHTML = filtered.map(m => `
+                <div class="movie-card group">
+                    <div class="relative overflow-hidden rounded-[2rem] aspect-[2/3]">
+                        <img src="${m.poster}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-all">
+                            <a href="${m.link}" target="_blank" class="bg-red-600 h-14 w-14 rounded-full flex items-center justify-center">
+                                <i class="fa fa-play text-white text-xl ml-1"></i>
+                            </a>
+                            <a href="${m.download}" target="_blank" class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl text-[10px] font-black">
+                                <i class="fa fa-download"></i> DOWNLOAD
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-3 px-1">
+                        <h4 class="font-black text-[13px] truncate uppercase tracking-tighter">${m.title}</h4>
+                        <p class="text-[10px] text-gray-500 font-bold">${m.year}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderHome();
+    </script>
+</body>
+</html>
