@@ -22,17 +22,15 @@
         .category-btn { border: 1px solid #27272a; transition: 0.3s; color: #a1a1aa; }
         .active-cat { background-color: #e50914; color: white; border-color: #e50914; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .movie-card:hover img { transform: scale(1.1); filter: brightness(0.5); }
     </style>
 </head>
 <body>
 
     <nav class="fixed w-full z-[100] px-6 py-4 flex justify-between items-center glass border-b border-white/5">
-        <h1 onclick="showPage('home')" class="text-red-600 text-2xl font-black italic cursor-pointer tracking-tighter hover:scale-105 transition">BASSAM FILMS</h1>
+        <h1 onclick="showPage('home')" class="text-red-600 text-2xl font-black italic cursor-pointer tracking-tighter">BASSAM FILMS</h1>
         <div class="flex items-center gap-6">
-            <button onclick="showPage('home')" class="text-xs font-bold hover:text-red-500 transition uppercase tracking-widest">Home</button>
-            <button onclick="showPage('login')" class="red-gradient px-5 py-2 rounded-full text-[10px] font-black shadow-lg shadow-red-600/20 hover:brightness-110 transition">ADMIN PANEL</button>
+            <button onclick="showPage('home')" class="text-xs font-bold hover:text-red-500 transition uppercase">Home</button>
+            <button onclick="showPage('login')" class="red-gradient px-5 py-2 rounded-full text-[10px] font-black shadow-lg shadow-red-600/20">ADMIN</button>
         </div>
     </nav>
 
@@ -42,83 +40,68 @@
                 <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2025" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
                 <div class="relative z-10 space-y-4">
-                    <span class="bg-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] italic shadow-lg">Trending Now</span>
-                    <h2 class="text-4xl md:text-6xl font-black uppercase italic leading-tight">Reba Filime <br> <span class="text-red-600">Zikunzwe Cyane</span></h2>
-                    <p class="text-gray-400 text-xs md:text-sm max-w-md font-medium">Urubuga rwa mbere mu Rwanda rwereka filime nshya mu buryo bwa HD. Reba cyangwa imanure filime ukanze rimwe gusa.</p>
+                    <span class="bg-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest italic">Trending Now</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase italic leading-tight">Filime <br> <span class="text-red-600">Zigezweho</span></h2>
                 </div>
             </div>
         </div>
 
         <div class="px-6 mb-8 overflow-x-auto no-scrollbar flex gap-3">
             <button onclick="filterMovies('all')" class="category-btn active-cat px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap">ZOSE</button>
-            <button onclick="filterMovies('trending')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap uppercase">Trending Now</button>
-            <button onclick="filterMovies('action')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap uppercase">Action</button>
-            <button onclick="filterMovies('season')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap uppercase">Series / Seasons</button>
-            <button onclick="filterMovies('india')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap uppercase">Indian</button>
-            <button onclick="filterMovies('cartoon')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap uppercase">Cartoons</button>
+            <button onclick="filterMovies('trending')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap">TRENDING</button>
+            <button onclick="filterMovies('action')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap">ACTION</button>
+            <button onclick="filterMovies('season')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap">SEASON</button>
+            <button onclick="filterMovies('india')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap">INDIAN</button>
+            <button onclick="filterMovies('cartoon')" class="category-btn px-6 py-2.5 rounded-2xl text-[10px] font-black whitespace-nowrap">CARTOON</button>
         </div>
 
         <div class="px-6 pb-24">
             <div class="flex flex-col md:flex-row justify-between md:items-center mb-10 gap-4">
                 <h3 id="categoryTitle" class="text-xl font-black uppercase tracking-widest border-l-4 border-red-600 pl-4 italic">Zose</h3>
-                <div class="relative">
-                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
-                    <input type="text" id="search" oninput="searchMovies()" placeholder="Shaka movie hano..." class="bg-zinc-900 border border-zinc-800 pl-12 pr-4 py-3 rounded-2xl text-sm outline-none focus:border-red-600 w-full md:w-80 transition-all">
-                </div>
+                <input type="text" id="search" oninput="searchMovies()" placeholder="Shaka movie..." class="bg-zinc-900 border border-zinc-800 px-6 py-3 rounded-2xl text-sm outline-none focus:border-red-600 w-full md:w-80">
             </div>
-            <div id="movieGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
-                </div>
+            <div id="movieGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"></div>
         </div>
     </section>
 
     <section id="page-login" class="page pt-44 h-screen px-6">
-        <div class="max-w-md mx-auto glass p-10 rounded-[3rem] shadow-2xl text-center border border-white/5">
-            <div class="bg-red-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-red-600/30">
-                <i class="fa fa-lock text-2xl"></i>
-            </div>
-            <h2 class="text-2xl font-black mb-2 italic">ADMIN ACCESS</h2>
-            <p class="text-gray-500 text-xs mb-8">Injira hano kugira ngo wongereho Filime nshya</p>
-            <div class="space-y-4 text-left">
-                <input type="text" id="userIn" placeholder="Username" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-red-600 transition">
-                <input type="password" id="passIn" placeholder="Password" class="w-full bg-black border border-zinc-800 p-4 rounded-2xl outline-none focus:border-red-600 transition">
-                <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-2xl font-black tracking-widest shadow-lg shadow-red-600/20 hover:scale-[1.02] transition">INJIRA</button>
-            </div>
+        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] shadow-2xl text-center">
+            <h2 class="text-2xl font-black mb-8 italic">ADMIN ACCESS</h2>
+            <input type="text" id="userIn" placeholder="Username" class="w-full bg-black border border-zinc-800 p-4 rounded-xl mb-4 outline-none">
+            <input type="password" id="passIn" placeholder="Password" class="w-full bg-black border border-zinc-800 p-4 rounded-xl mb-4 outline-none">
+            <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black">INJIRA</button>
         </div>
     </section>
 
     <section id="page-admin" class="page pt-24 px-6 min-h-screen">
         <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-10">
-            <div class="glass p-8 rounded-[2.5rem] h-fit sticky top-28">
-                <h3 class="font-black text-red-600 mb-6 uppercase text-sm tracking-widest">Ongeramo Filime</h3>
-                <div class="space-y-4">
-                    <input type="text" id="mTitle" placeholder="Izina rya Movie" class="w-full bg-black border border-zinc-800 p-3.5 rounded-xl outline-none text-sm focus:border-red-600">
-                    <input type="text" id="mYear" placeholder="Umwaka (2026)" class="w-full bg-black border border-zinc-800 p-3.5 rounded-xl outline-none text-sm focus:border-red-600">
-                    <select id="mCat" class="w-full bg-black border border-zinc-800 p-3.5 rounded-xl outline-none text-sm text-gray-400">
+            <div class="glass p-8 rounded-[2rem] h-fit">
+                <h3 class="font-black text-red-600 mb-6 uppercase text-sm">Ongeramo Filime</h3>
+                <div class="space-y-4 text-black">
+                    <input type="text" id="mTitle" placeholder="Title" class="w-full bg-white p-3 rounded-lg outline-none text-sm">
+                    <input type="text" id="mYear" placeholder="Year" class="w-full bg-white p-3 rounded-lg outline-none text-sm">
+                    <select id="mCat" class="w-full bg-white p-3 rounded-lg outline-none text-sm">
                         <option value="trending">Trending Now</option>
                         <option value="action">Action</option>
                         <option value="season">Season / Series</option>
-                        <option value="india">Indian Movie</option>
+                        <option value="india">Indian</option>
                         <option value="cartoon">Cartoon</option>
                     </select>
-                    <input type="text" id="mLink" placeholder="Watch Link (YouTube/Drive)" class="w-full bg-black border border-zinc-800 p-3.5 rounded-xl outline-none text-sm focus:border-red-600">
-                    <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-black border border-zinc-800 p-3.5 rounded-xl outline-none text-sm focus:border-red-600">
-                    <input type="text" id="mPoster" placeholder="Poster URL (https://...jpg)" class="w-full bg-black border border-zinc-800 p-3.5 rounded-xl outline-none text-sm focus:border-red-600">
-                    <button onclick="saveToFirebase()" class="w-full red-gradient py-4 rounded-xl font-black text-sm shadow-lg shadow-red-600/20 hover:scale-[1.02] transition">SAVE TO FIREBASE</button>
+                    <input type="text" id="mLink" placeholder="Watch Link" class="w-full bg-white p-3 rounded-lg outline-none text-sm">
+                    <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-white p-3 rounded-lg outline-none text-sm">
+                    <input type="text" id="mPoster" placeholder="Poster URL (https://...)" class="w-full bg-white p-3 rounded-lg outline-none text-sm">
+                    <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black text-white text-sm">SAVE ONLINE</button>
                 </div>
             </div>
             <div class="lg:col-span-2 space-y-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-black text-gray-500 uppercase text-xs tracking-widest">Filime ziriho ubu</h3>
-                    <button onclick="location.reload()" class="text-[10px] bg-zinc-800 px-3 py-1 rounded-lg">Refresh</button>
-                </div>
-                <div id="adminMovieList" class="grid gap-3">
-                    </div>
+                <h3 class="font-black text-gray-500 uppercase text-xs">Manage Films</h3>
+                <div id="adminMovieList" class="grid gap-3"></div>
             </div>
         </div>
     </section>
 
     <script>
-        // --- FIREBASE INITIALIZATION ---
+        // --- 1. FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBlq2acq1pUcZAecjemVxS1UoVaPrOMAQc",
             authDomain: "bassamfilms-1d584.firebaseapp.com",
@@ -129,13 +112,14 @@
             appId: "1:313527595091:web:53847778813445832a56a6",
             measurementId: "G-LM1J8KQ0XC"
         };
-        
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // --- 2. ADSTERRA SMARTLINK ---
+        const smartLink = "PASTE_YA_SMARTLINK_HANO"; // <-- Shyira Smartlink yawe hano!
+
         let movies = [];
 
-        // --- NAVIGATION ---
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${id}`).classList.add('active');
@@ -143,38 +127,39 @@
         }
 
         function handleLogin() {
-            const u = document.getElementById('userIn').value;
-            const p = document.getElementById('passIn').value;
-            if(u === "bassam" && p === "54321") {
+            if(document.getElementById('userIn').value === "bassam" && document.getElementById('passIn').value === "54321") {
                 showPage('admin');
-            } else { alert("Login failed! Username cyangwa Password ntabwo ariyo."); }
+            } else { alert("Login failed!"); }
         }
 
-        // --- DATA LOGIC ---
+        // MONETIZED DOWNLOAD FUNCTION
+        function handleDownload(realLink, movieId) {
+            const hasClicked = localStorage.getItem('ad_' + movieId);
+            if (!hasClicked) {
+                window.open(smartLink, '_blank'); // Fungura Ad bwa mbere
+                localStorage.setItem('ad_' + movieId, 'true');
+            } else {
+                window.open(realLink, '_blank'); // Fungura filime bwa kabiri
+                localStorage.removeItem('ad_' + movieId);
+            }
+        }
+
+        // FIREBASE LOGIC
         function saveToFirebase() {
-            const title = document.getElementById('mTitle').value;
-            const year = document.getElementById('mYear').value;
-            const cat = document.getElementById('mCat').value;
-            const link = document.getElementById('mLink').value;
-            const dl = document.getElementById('mDL').value;
-            const poster = document.getElementById('mPoster').value;
-
-            if(!title || !poster) return alert("Uzuza nibura Izina n'Ifoto!");
-
             const movieData = {
-                title, year, category: cat, link, download: dl, poster
+                title: document.getElementById('mTitle').value,
+                year: document.getElementById('mYear').value,
+                category: document.getElementById('mCat').value,
+                link: document.getElementById('mLink').value,
+                download: document.getElementById('mDL').value,
+                poster: document.getElementById('mPoster').value
             };
-
             database.ref('movies').push(movieData).then(() => {
-                alert("Movie yashyizweho neza kuri Firebase!");
-                document.getElementById('mTitle').value = "";
-                document.getElementById('mLink').value = "";
-                document.getElementById('mDL').value = "";
-                document.getElementById('mPoster').value = "";
-            }).catch(err => alert("Error: " + err));
+                alert("Yashyizweho neza!");
+                location.reload();
+            });
         }
 
-        // Gusoma amakuru Online
         database.ref('movies').on('value', (snapshot) => {
             movies = [];
             snapshot.forEach((childSnapshot) => {
@@ -186,30 +171,19 @@
 
         function renderHome(data) {
             const grid = document.getElementById('movieGrid');
-            if(data.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center py-20 text-zinc-600 italic">Nta movie zirashyirwaho...</p>`;
-                return;
-            }
             grid.innerHTML = data.map(m => `
-                <div class="movie-card group relative bg-zinc-900 rounded-[2.2rem] overflow-hidden shadow-2xl transition duration-500">
-                    <div class="aspect-[2/3] relative overflow-hidden">
-                        <img src="${m.poster}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-4">
-                            <a href="${m.link}" target="_blank" class="bg-red-600 h-14 w-14 rounded-full flex items-center justify-center scale-50 group-hover:scale-100 transition duration-300 shadow-xl">
-                                <i class="fa fa-play text-white text-xl ml-1"></i>
-                            </a>
-                            <a href="${m.download}" target="_blank" class="bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-white hover:text-black transition transform translate-y-4 group-hover:translate-y-0 duration-300">
-                                <i class="fa fa-download mr-1"></i> Download
-                            </a>
-                        </div>
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-red-600/90 backdrop-blur-md px-2 py-0.5 rounded text-[8px] font-black uppercase italic shadow-lg">New</span>
+                <div class="group bg-zinc-900 rounded-[2rem] overflow-hidden shadow-2xl hover:-translate-y-2 transition duration-300">
+                    <div class="aspect-[2/3] relative">
+                        <img src="${m.poster}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-4">
+                            <a href="${m.link}" target="_blank" class="bg-red-600 h-14 w-14 rounded-full flex items-center justify-center shadow-lg"><i class="fa fa-play text-xl"></i></a>
+                            <button onclick="handleDownload('${m.download}', '${m.id}')" class="bg-white text-black px-5 py-2 rounded-xl text-[10px] font-black uppercase">Download</button>
                         </div>
                     </div>
                     <div class="p-4">
-                        <h4 class="text-[13px] font-black truncate uppercase tracking-tighter group-hover:text-red-600 transition">${m.title}</h4>
+                        <h4 class="text-xs font-black truncate uppercase tracking-tight">${m.title}</h4>
                         <div class="flex justify-between items-center mt-2">
-                            <span class="text-[9px] text-red-500 font-black uppercase italic">${m.category}</span>
+                            <span class="text-[9px] text-red-600 font-black uppercase italic">${m.category}</span>
                             <span class="text-[9px] text-zinc-500 font-bold">${m.year}</span>
                         </div>
                     </div>
@@ -220,25 +194,18 @@
         function renderAdmin() {
             const list = document.getElementById('adminMovieList');
             list.innerHTML = movies.map(m => `
-                <div class="flex items-center justify-between glass p-4 rounded-2xl hover:border-red-600/30 transition">
+                <div class="flex items-center justify-between glass p-3 rounded-xl">
                     <div class="flex items-center gap-4">
-                        <img src="${m.poster}" class="h-12 w-10 rounded-lg object-cover shadow-md">
-                        <div>
-                            <p class="font-black text-xs uppercase tracking-tight">${m.title}</p>
-                            <p class="text-[9px] text-red-600 font-bold uppercase italic">${m.category} | ${m.year}</p>
-                        </div>
+                        <img src="${m.poster}" class="h-10 w-8 rounded object-cover shadow">
+                        <p class="font-bold text-xs uppercase">${m.title}</p>
                     </div>
-                    <button onclick="deleteMovie('${m.id}')" class="h-10 w-10 flex items-center justify-center rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition">
-                        <i class="fa fa-trash-can text-sm"></i>
-                    </button>
+                    <button onclick="deleteMovie('${m.id}')" class="text-red-500 p-2"><i class="fa fa-trash"></i></button>
                 </div>
             `).join('');
         }
 
         function deleteMovie(id) {
-            if(confirm("Uremeza ko ushaka gusiba iyi movie burundu?")) {
-                database.ref('movies/' + id).remove();
-            }
+            if(confirm("Siba iyi movie?")) database.ref('movies/' + id).remove();
         }
 
         function filterMovies(cat) {
@@ -246,17 +213,14 @@
                 btn.classList.remove('active-cat');
                 if(btn.innerText.toLowerCase().includes(cat.toLowerCase())) btn.classList.add('active-cat');
             });
-            if(cat === 'all') document.querySelectorAll('.category-btn')[0].classList.add('active-cat');
-
-            const filtered = cat === 'all' ? movies : movies.filter(m => m.category.toLowerCase() === cat.toLowerCase());
+            const filtered = cat === 'all' ? movies : movies.filter(m => m.category === cat);
             document.getElementById('categoryTitle').innerText = cat;
             renderHome(filtered);
         }
 
         function searchMovies() {
             const term = document.getElementById('search').value.toLowerCase();
-            const filtered = movies.filter(m => m.title.toLowerCase().includes(term));
-            renderHome(filtered);
+            renderHome(movies.filter(m => m.title.toLowerCase().includes(term)));
         }
     </script>
 </body>
