@@ -1,11 +1,18 @@
 [
   {
-    "id": 1,
-    "title": "Deadpool & Wolverine",
-    "category": "action",
+    "title": "AVATAR 2",
     "year": "2024",
-    "link": "https://youtube.com/...",
-    "download": "https://drive.google.com/...",
-    "poster": "https://izina-ry-ifoto.jpg"
+    "category": "action",
+    "link": "https://www.youtube.com/watch?v=example1",
+    "download": "https://drive.google.com/example1",
+    "poster": "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070"
+  },
+  {
+    "title": "THE CHOSEN",
+    "year": "2023",
+    "category": "season",
+    "link": "https://www.youtube.com/watch?v=example2",
+    "download": "https://drive.google.com/example2",
+    "poster": "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059"
   }
 ]
