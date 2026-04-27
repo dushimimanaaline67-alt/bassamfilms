@@ -6,6 +6,12 @@
     <meta name="google-site-verification" content="Lm2bWJKlKe_7W8w6mIV_Oeb4cGoJFuDrSzmQdFCmjYM" />
     <title>BASSAM FILMS | Reba Filime Zisobanuye mu Kinyarwanda</title>
     
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="BASSAM FILMS">
+    <meta name="theme-color" content="#e50914">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -17,13 +23,12 @@
         .page { display: none; }
         .active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .glass { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .glass { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .red-gradient { background: linear-gradient(45deg, #e50914, #ff4d4d); }
         .category-btn { border: 1px solid #1f1f23; transition: 0.3s; color: #a1a1aa; }
         .active-cat { background-color: #e50914; color: white; border-color: #e50914; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* Oshakur Style & New Features */
         .movie-card:hover .poster-overlay { opacity: 1; }
         .search-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
         .search-input:focus { border-color: #e50914; outline: none; }
@@ -54,7 +59,7 @@
             <h1 onclick="showPage('home')" class="text-red-600 text-xl md:text-2xl font-black italic cursor-pointer uppercase tracking-tighter">BASSAM FILMS</h1>
             <div class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-zinc-400">
                 <button onclick="showPage('home')" class="hover:text-red-500 transition">Home</button>
-                <button onclick="downloadApp()" class="hover:text-red-500 transition"><i class="fa fa-mobile-alt mr-1"></i> Download App</button>
+                <button onclick="downloadApp()" class="hover:text-red-500 transition text-white border-b border-red-600 pb-1">Download App</button>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -68,13 +73,13 @@
 
     <section id="page-home" class="page active pt-20 min-h-screen">
         <div class="px-4 md:px-10 mb-8 mt-4">
-            <div class="relative h-[220px] md:h-[380px] w-full rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex items-center p-6 md:p-12">
-                <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070" class="absolute inset-0 w-full h-full object-cover">
+            <div class="relative h-[220px] md:h-[380px] w-full rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex items-center p-6 md:p-12 shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
                 <div class="relative z-10 space-y-4">
-                    <span class="bg-red-600/20 text-red-500 border border-red-600/50 px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">Bassam Premium</span>
-                    <h2 class="text-3xl md:text-6xl font-black uppercase italic leading-none tracking-tighter">FILIME <br> <span class="text-red-600 font-black">ZISOBANUYE</span></h2>
-                    <button onclick="downloadApp()" class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-black uppercase hover:scale-105 transition">Get App Now</button>
+                    <span class="bg-red-600/20 text-red-500 border border-red-600/50 px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">Bassam Official</span>
+                    <h2 class="text-3xl md:text-6xl font-black uppercase italic leading-none tracking-tighter">AGASOBANUYE <br> <span class="text-red-600 font-black">KAGEZWEHO</span></h2>
+                    <button onclick="downloadApp()" class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-black uppercase hover:scale-105 transition shadow-xl">Yishyire muri Telefone (App)</button>
                 </div>
             </div>
         </div>
@@ -99,7 +104,7 @@
     <div id="notifBox" class="notification-prompt glass max-w-[280px]">
         <div class="flex items-center gap-3 mb-3">
             <div class="bg-red-600 h-8 w-8 rounded-lg flex items-center justify-center"><i class="fa fa-bell text-white text-xs"></i></div>
-            <p class="text-[11px] font-black uppercase tracking-tight leading-tight">Vumbura filime nshya <br><span class="text-zinc-500 font-bold">Ujye ubona imenyekanisha</span></p>
+            <p class="text-[11px] font-black uppercase tracking-tight leading-tight">Ubutumwa <br><span class="text-zinc-500 font-bold">Ujye umenya filime nshya</span></p>
         </div>
         <div class="flex gap-2">
             <button onclick="enableNotif()" class="flex-1 red-gradient py-2 rounded-lg text-[9px] font-black uppercase">Emeza</button>
@@ -108,8 +113,8 @@
     </div>
 
     <section id="page-login" class="page pt-44 h-screen px-6">
-        <div class="max-w-md mx-auto glass p-10 rounded-[2rem] text-center border border-white/5">
-            <h2 class="text-2xl font-black mb-8 italic text-red-600">ADMIN ACCESS</h2>
+        <div class="max-w-md mx-auto glass p-10 rounded-[2rem] text-center border border-white/5 shadow-2xl">
+            <h2 class="text-2xl font-black mb-8 italic text-red-600">ADMIN LOGIN</h2>
             <input type="text" id="userIn" placeholder="Username" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-4 outline-none text-sm focus:border-red-600 transition">
             <input type="password" id="passIn" placeholder="Password" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-4 outline-none text-sm focus:border-red-600 transition">
             <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition">Injira</button>
@@ -122,17 +127,17 @@
                 <h3 class="font-black text-red-600 mb-6 uppercase text-sm flex items-center gap-2"><i class="fa fa-plus-circle"></i> Ongeramo Filime</h3>
                 <div class="space-y-4">
                     <input type="text" id="mTitle" placeholder="Izina rya Filime" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <input type="text" id="mYear" placeholder="Umwaka (Urugero: 2024)" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
+                    <input type="text" id="mYear" placeholder="Umwaka" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
                     <select id="mCat" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800 text-zinc-400">
                         <option value="trending">Trending</option>
                         <option value="action">Action</option>
                         <option value="season">Season</option>
                         <option value="india">Indian</option>
                     </select>
-                    <input type="text" id="mLink" placeholder="Watch Link (Video Player)" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
+                    <input type="text" id="mLink" placeholder="Watch Link" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
                     <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
                     <input type="text" id="mPoster" placeholder="Poster URL (Photo)" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black text-white uppercase text-sm shadow-lg">Bika Filime & Notify</button>
+                    <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black text-white uppercase text-sm shadow-lg">Bika Filime</button>
                 </div>
             </div>
             <div class="lg:col-span-2 space-y-4 pb-20">
@@ -162,6 +167,25 @@
         const smartLink = "https://www.profitablecpmratenetwork.com/x66g8e2ere?key=5ff83b3548a532596c7420d3474a1354";
 
         let allMovies = [];
+        let deferredPrompt;
+
+        // PWA - Download App Detection
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function downloadApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') { console.log('User accepted install'); }
+                    deferredPrompt = null;
+                });
+            } else {
+                alert("Kugira ngo ube ubonye App kuri iPhone: Kanda 'Share' hanyuma uhitemo 'Add to Home Screen'. Kuri Android urabibona mu ma 'Settings' ya Browser.");
+            }
+        }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -180,17 +204,9 @@
             else { window.open(realLink, '_blank'); localStorage.removeItem('ad_' + movieId); }
         }
 
-        function downloadApp() {
-            // Shyiraho link yawe ya .apk hano
-            window.open("https://your-app-link.com/bassam.apk", "_blank");
-            alert("Gukurura BASSAM FILMS App bitangiye...");
-        }
-
-        // NOTIFICATIONS LOGIC
+        // NOTIFICATIONS
         setTimeout(() => {
-            if(!localStorage.getItem('notif_set')) {
-                document.getElementById('notifBox').style.display = 'block';
-            }
+            if(!localStorage.getItem('notif_set')) document.getElementById('notifBox').style.display = 'block';
         }, 6000);
 
         function closeNotif() {
@@ -210,14 +226,11 @@
 
         function sendPush(title) {
             if (Notification.permission === "granted") {
-                new Notification("BASSAM FILMS: Filime Nshya", {
-                    body: "Yirebe ubu: " + title,
-                    icon: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=100"
-                });
+                new Notification("BASSAM FILMS", { body: "Filime Nshya: " + title });
             }
         }
 
-        // DATABASE OPERATIONS
+        // DATABASE
         function saveToFirebase() {
             const movieData = {
                 title: document.getElementById('mTitle').value,
@@ -229,8 +242,8 @@
             };
             if(movieData.title && movieData.link) {
                 database.ref('movies').push(movieData).then(() => {
-                    sendPush(movieData.title); // Send notification to admin immediately
-                    alert("Byagezeho kandi ubutumwa bwoherejwe!");
+                    sendPush(movieData.title);
+                    alert("Byagezeho!");
                     location.reload();
                 });
             }
@@ -246,7 +259,7 @@
         function renderHome(data) {
             const grid = document.getElementById('movieGrid');
             if(data.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-zinc-700 py-20 uppercase font-black">Nta filime ibonetse...</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center text-zinc-700 py-20 uppercase font-black tracking-widest">Nta filime n'imwe ihari...</p>`;
                 return;
             }
             grid.innerHTML = data.map(m => `
@@ -257,7 +270,7 @@
                             <a href="${m.link}" target="_blank" class="bg-red-600 h-12 w-12 rounded-full flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-300"><i class="fa fa-play text-white text-sm"></i></a>
                             <button onclick="handleDownload('${m.download}', '${m.id}')" class="bg-white text-black px-5 py-2 rounded-xl text-[9px] font-black uppercase shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-300 delay-75">Download</button>
                         </div>
-                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-[7px] font-black uppercase">${m.year}</div>
+                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-[7px] font-black uppercase shadow-lg">${m.year}</div>
                     </div>
                     <div class="p-3">
                         <h4 class="text-[10px] font-black truncate uppercase text-zinc-100">${m.title}</h4>
@@ -283,10 +296,7 @@
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active-cat'));
             event.target.classList.add('active-cat');
             if(cat === 'all') renderHome(allMovies);
-            else {
-                const filtered = allMovies.filter(m => m.category === cat);
-                renderHome(filtered);
-            }
+            else renderHome(allMovies.filter(m => m.category === cat));
         }
 
         function renderAdmin() {
