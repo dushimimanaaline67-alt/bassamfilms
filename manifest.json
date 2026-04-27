@@ -1,0 +1,21 @@
+{
+  "name": "BASSAM FILMS",
+  "short_name": "Bassam",
+  "description": "Reba Filime Zisobanuye mu Kinyarwanda",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#e50914",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
