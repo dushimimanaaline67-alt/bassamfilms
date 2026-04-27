@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="Lm2bWJKlKe_7W8w6mIV_Oeb4cGoJFuDrSzmQdFCmjYM" />
-    <title>BASSAM FILMS | Reba Filime Zisobanuye mu Kinyarwanda</title>
+    <title>BASSAM FILMS | Agasobanuye</title>
     
-    <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="BASSAM FILMS">
     <meta name="theme-color" content="#e50914">
+    
+    <link rel="manifest" href='data:application/json,{"name":"BASSAM FILMS","short_name":"BF","start_url":"/","display":"standalone","background_color":"#050505","theme_color":"#e50914","icons":[{"src":"https://i.postimg.cc/mrhvS0S7/BF-LOGO.png","sizes":"192x192","type":"image/png"},{"src":"https://i.postimg.cc/mrhvS0S7/BF-LOGO.png","sizes":"512x512","type":"image/png"}]}'>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -28,83 +28,70 @@
         .category-btn { border: 1px solid #1f1f23; transition: 0.3s; color: #a1a1aa; }
         .active-cat { background-color: #e50914; color: white; border-color: #e50914; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-
         .movie-card:hover .poster-overlay { opacity: 1; }
         .search-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
         .search-input:focus { border-color: #e50914; outline: none; }
-
-        .notification-prompt {
-            position: fixed; bottom: 100px; left: 20px;
-            background: #111; border: 1px solid #e50914;
-            padding: 15px; border-radius: 20px; z-index: 2000;
-            display: none; animation: slideIn 0.5s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-
-        .whatsapp-float {
-            position: fixed; bottom: 30px; right: 30px;
-            background-color: #25d366; color: #FFF;
-            border-radius: 50px; width: 60px; height: 60px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            z-index: 1000; transition: 0.3s;
-        }
+        
+        /* Notification style */
+        #notifBox { position: fixed; bottom: 100px; left: 20px; background: #111; border: 1px solid #e50914; padding: 15px; border-radius: 20px; z-index: 2000; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: #25d366; color: #FFF; border-radius: 50px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 1000; }
     </style>
 </head>
 <body>
 
     <nav class="fixed w-full z-[100] px-4 md:px-10 py-3 flex justify-between items-center glass">
-        <div class="flex items-center gap-8">
-            <h1 onclick="showPage('home')" class="text-red-600 text-xl md:text-2xl font-black italic cursor-pointer uppercase tracking-tighter">BASSAM FILMS</h1>
-            <div class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-zinc-400">
-                <button onclick="showPage('home')" class="hover:text-red-500 transition">Home</button>
-                <button onclick="downloadApp()" class="hover:text-red-500 transition text-white border-b border-red-600 pb-1">Download App</button>
-            </div>
+        <div class="flex items-center gap-4">
+            <div class="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-xl shadow-lg border border-white/10">BF</div>
+            <h1 onclick="showPage('home')" class="text-white text-lg md:text-xl font-black cursor-pointer uppercase tracking-tighter">BASSAM FILMS</h1>
         </div>
         <div class="flex items-center gap-4">
-            <div class="relative hidden sm:block">
-                <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." class="search-input py-1.5 px-4 rounded-full text-xs w-48 lg:w-64">
-                <i class="fa fa-search absolute right-4 top-2 text-zinc-500 text-xs"></i>
-            </div>
+            <button onclick="downloadApp()" class="hidden md:block bg-zinc-800 hover:bg-zinc-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase transition border border-white/5">Get App</button>
             <button onclick="showPage('login')" class="red-gradient px-5 py-1.5 rounded-full text-[10px] font-black uppercase shadow-lg">Admin</button>
         </div>
     </nav>
 
     <section id="page-home" class="page active pt-20 min-h-screen">
         <div class="px-4 md:px-10 mb-8 mt-4">
-            <div class="relative h-[220px] md:h-[380px] w-full rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden flex items-center p-6 md:p-12 shadow-2xl">
+            <div class="relative h-[220px] md:h-[380px] w-full rounded-[2rem] overflow-hidden flex items-center p-6 md:p-12 shadow-2xl border border-white/5">
                 <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
                 <div class="relative z-10 space-y-4">
-                    <span class="bg-red-600/20 text-red-500 border border-red-600/50 px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">Bassam Official</span>
-                    <h2 class="text-3xl md:text-6xl font-black uppercase italic leading-none tracking-tighter">AGASOBANUYE <br> <span class="text-red-600 font-black">KAGEZWEHO</span></h2>
-                    <button onclick="downloadApp()" class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-black uppercase hover:scale-105 transition shadow-xl">Yishyire muri Telefone (App)</button>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-red-600 h-2 w-2 rounded-full animate-pulse"></span>
+                        <span class="text-red-500 text-[10px] font-black uppercase tracking-[0.2em]">Live updates</span>
+                    </div>
+                    <h2 class="text-4xl md:text-7xl font-black uppercase italic leading-none tracking-tighter">AGASOBANUYE <br> <span class="text-red-600">BASSAM</span></h2>
+                    <button onclick="downloadApp()" class="red-gradient text-white px-8 py-3 rounded-2xl text-[11px] font-black uppercase hover:scale-105 transition shadow-2xl border border-white/10 flex items-center gap-3">
+                        <i class="fa fa-download"></i> Yishyire muri Telefone (Install App)
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="px-4 md:px-10 mb-6 block sm:hidden">
-            <input type="text" id="searchInputMobile" oninput="searchMoviesMobile()" placeholder="Shakisha hano..." class="search-input w-full py-3 px-6 rounded-2xl text-sm">
+        <div class="px-4 md:px-10 mb-6">
+            <div class="relative">
+                <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." class="search-input w-full py-4 px-6 rounded-2xl text-sm border border-white/5">
+                <i class="fa fa-search absolute right-6 top-4 text-zinc-500"></i>
+            </div>
         </div>
 
         <div class="px-4 md:px-10 mb-8 overflow-x-auto no-scrollbar flex gap-2">
-            <button onclick="filterMovies('all')" class="cat-btn active-cat px-6 py-2 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Zose</button>
-            <button onclick="filterMovies('trending')" class="cat-btn category-btn px-6 py-2 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Trending</button>
-            <button onclick="filterMovies('action')" class="cat-btn category-btn px-6 py-2 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Action</button>
-            <button onclick="filterMovies('season')" class="cat-btn category-btn px-6 py-2 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Season</button>
-            <button onclick="filterMovies('india')" class="cat-btn category-btn px-6 py-2 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Indian</button>
+            <button onclick="filterMovies('all')" class="cat-btn active-cat px-6 py-2.5 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Zose</button>
+            <button onclick="filterMovies('trending')" class="cat-btn category-btn px-6 py-2.5 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Trending</button>
+            <button onclick="filterMovies('action')" class="cat-btn category-btn px-6 py-2.5 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Action</button>
+            <button onclick="filterMovies('season')" class="cat-btn category-btn px-6 py-2.5 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Season</button>
+            <button onclick="filterMovies('india')" class="cat-btn category-btn px-6 py-2.5 rounded-xl text-[10px] font-black whitespace-nowrap uppercase">Indian</button>
         </div>
 
-        <div class="px-4 md:px-10 pb-20">
+        <div class="px-4 md:px-10 pb-24">
             <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6"></div>
         </div>
     </section>
 
-    <div id="notifBox" class="notification-prompt glass max-w-[280px]">
+    <div id="notifBox" class="glass max-w-[280px]">
         <div class="flex items-center gap-3 mb-3">
-            <div class="bg-red-600 h-8 w-8 rounded-lg flex items-center justify-center"><i class="fa fa-bell text-white text-xs"></i></div>
-            <p class="text-[11px] font-black uppercase tracking-tight leading-tight">Ubutumwa <br><span class="text-zinc-500 font-bold">Ujye umenya filime nshya</span></p>
+            <div class="bg-red-600 h-8 w-8 rounded-lg flex items-center justify-center text-white text-xs font-bold">BF</div>
+            <p class="text-[11px] font-black uppercase tracking-tight">Emeza ubutumwa <br><span class="text-zinc-500 font-bold text-[9px]">Umenye filime nshya</span></p>
         </div>
         <div class="flex gap-2">
             <button onclick="enableNotif()" class="flex-1 red-gradient py-2 rounded-lg text-[9px] font-black uppercase">Emeza</button>
@@ -113,46 +100,41 @@
     </div>
 
     <section id="page-login" class="page pt-44 h-screen px-6">
-        <div class="max-w-md mx-auto glass p-10 rounded-[2rem] text-center border border-white/5 shadow-2xl">
-            <h2 class="text-2xl font-black mb-8 italic text-red-600">ADMIN LOGIN</h2>
-            <input type="text" id="userIn" placeholder="Username" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-4 outline-none text-sm focus:border-red-600 transition">
-            <input type="password" id="passIn" placeholder="Password" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-4 outline-none text-sm focus:border-red-600 transition">
-            <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition">Injira</button>
+        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] text-center border border-white/5">
+            <h2 class="text-2xl font-black mb-8 italic text-red-600">ADMIN</h2>
+            <input type="text" id="userIn" placeholder="Username" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl mb-4 outline-none text-sm">
+            <input type="password" id="passIn" placeholder="Password" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl mb-4 outline-none text-sm">
+            <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black uppercase">Injira</button>
         </div>
     </section>
 
     <section id="page-admin" class="page pt-24 px-4 md:px-10 min-h-screen">
         <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-10">
             <div class="glass p-8 rounded-[2rem] h-fit border border-white/5">
-                <h3 class="font-black text-red-600 mb-6 uppercase text-sm flex items-center gap-2"><i class="fa fa-plus-circle"></i> Ongeramo Filime</h3>
-                <div class="space-y-4">
-                    <input type="text" id="mTitle" placeholder="Izina rya Filime" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <input type="text" id="mYear" placeholder="Umwaka" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <select id="mCat" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800 text-zinc-400">
+                <h3 class="font-black text-red-600 mb-6 uppercase text-sm">Ongeramo Filime</h3>
+                <div class="space-y-3">
+                    <input type="text" id="mTitle" placeholder="Izina" class="w-full bg-black p-3 rounded-lg outline-none text-xs border border-zinc-800">
+                    <input type="text" id="mYear" placeholder="Umwaka" class="w-full bg-black p-3 rounded-lg outline-none text-xs border border-zinc-800">
+                    <select id="mCat" class="w-full bg-black p-3 rounded-lg outline-none text-xs border border-zinc-800">
                         <option value="trending">Trending</option>
                         <option value="action">Action</option>
                         <option value="season">Season</option>
                         <option value="india">Indian</option>
                     </select>
-                    <input type="text" id="mLink" placeholder="Watch Link" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <input type="text" id="mPoster" placeholder="Poster URL (Photo)" class="w-full bg-zinc-900 p-3 rounded-lg outline-none text-sm border border-zinc-800">
-                    <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black text-white uppercase text-sm shadow-lg">Bika Filime</button>
+                    <input type="text" id="mLink" placeholder="Watch Link" class="w-full bg-black p-3 rounded-lg outline-none text-xs border border-zinc-800">
+                    <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-black p-3 rounded-lg outline-none text-xs border border-zinc-800">
+                    <input type="text" id="mPoster" placeholder="Poster URL" class="w-full bg-black p-3 rounded-lg outline-none text-xs border border-zinc-800">
+                    <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black uppercase text-xs shadow-lg">Save & Notify</button>
                 </div>
             </div>
-            <div class="lg:col-span-2 space-y-4 pb-20">
-                <h3 class="text-sm font-black uppercase text-zinc-500 ml-2">Izo wamaze gushyiraho</h3>
-                <div id="adminMovieList" class="grid gap-3"></div>
-            </div>
+            <div id="adminMovieList" class="lg:col-span-2 space-y-3"></div>
         </div>
     </section>
 
-    <a href="https://wa.me/250781626371" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/250781626371" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
     <script>
-        // FIREBASE CONFIG
+        // FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBlq2acq1pUcZAecjemVxS1UoVaPrOMAQc",
             authDomain: "bassamfilms-1d584.firebaseapp.com",
@@ -169,7 +151,7 @@
         let allMovies = [];
         let deferredPrompt;
 
-        // PWA - Download App Detection
+        // INSTALL APP LOGIC (A2HS)
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -178,12 +160,12 @@
         function downloadApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') { console.log('User accepted install'); }
+                deferredPrompt.userChoice.then((result) => {
+                    if (result.outcome === 'accepted') { console.log('Install success'); }
                     deferredPrompt = null;
                 });
             } else {
-                alert("Kugira ngo ube ubonye App kuri iPhone: Kanda 'Share' hanyuma uhitemo 'Add to Home Screen'. Kuri Android urabibona mu ma 'Settings' ya Browser.");
+                alert("Kuri Android: Kanda utudomo dutatu hejuru iburyo, ukande 'Install App' cyangwa 'Add to Home Screen'. \n\nKuri iPhone: Kanda agasanduku gafite akambi (Share), ukande 'Add to Home Screen'.");
             }
         }
 
@@ -195,7 +177,7 @@
 
         function handleLogin() {
             if(document.getElementById('userIn').value === "bassam" && document.getElementById('passIn').value === "54321") showPage('admin');
-            else alert("Username cyangwa Password ntabwo ariyo!");
+            else alert("Error!");
         }
 
         function handleDownload(realLink, movieId) {
@@ -205,32 +187,18 @@
         }
 
         // NOTIFICATIONS
-        setTimeout(() => {
-            if(!localStorage.getItem('notif_set')) document.getElementById('notifBox').style.display = 'block';
-        }, 6000);
-
-        function closeNotif() {
-            document.getElementById('notifBox').style.display = 'none';
-            localStorage.setItem('notif_set', 'declined');
-        }
-
+        setTimeout(() => { if(!localStorage.getItem('notif_set')) document.getElementById('notifBox').style.display = 'block'; }, 6000);
+        function closeNotif() { document.getElementById('notifBox').style.display = 'none'; localStorage.setItem('notif_set', 'declined'); }
         function enableNotif() {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
+            Notification.requestPermission().then(perm => {
+                if(perm === 'granted') {
                     localStorage.setItem('notif_set', 'granted');
                     document.getElementById('notifBox').style.display = 'none';
-                    new Notification("BASSAM FILMS", { body: "Murakoze kwemeza! Muzajya mubona filime nshya hano." });
+                    new Notification("BASSAM FILMS", { body: "Murakoze! Muzajya mubona filime nshya hano." });
                 }
             });
         }
 
-        function sendPush(title) {
-            if (Notification.permission === "granted") {
-                new Notification("BASSAM FILMS", { body: "Filime Nshya: " + title });
-            }
-        }
-
-        // DATABASE
         function saveToFirebase() {
             const movieData = {
                 title: document.getElementById('mTitle').value,
@@ -242,54 +210,43 @@
             };
             if(movieData.title && movieData.link) {
                 database.ref('movies').push(movieData).then(() => {
-                    sendPush(movieData.title);
-                    alert("Byagezeho!");
+                    if (Notification.permission === "granted") new Notification("BASSAM FILMS", { body: "Filime Nshya: " + movieData.title });
+                    alert("Done!");
                     location.reload();
                 });
             }
         }
 
-        database.ref('movies').on('value', (snapshot) => {
+        database.ref('movies').on('value', (snap) => {
             allMovies = [];
-            snapshot.forEach((child) => { allMovies.unshift({ id: child.key, ...child.val() }); });
+            snap.forEach((c) => { allMovies.unshift({ id: c.key, ...c.val() }); });
             renderHome(allMovies);
             renderAdmin();
         });
 
         function renderHome(data) {
             const grid = document.getElementById('movieGrid');
-            if(data.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-zinc-700 py-20 uppercase font-black tracking-widest">Nta filime n'imwe ihari...</p>`;
-                return;
-            }
             grid.innerHTML = data.map(m => `
                 <div class="group movie-card bg-zinc-900/40 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03] border border-white/5">
                     <div class="aspect-[2/3] relative overflow-hidden">
                         <img src="${m.poster}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                         <div class="poster-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
                             <a href="${m.link}" target="_blank" class="bg-red-600 h-12 w-12 rounded-full flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-300"><i class="fa fa-play text-white text-sm"></i></a>
-                            <button onclick="handleDownload('${m.download}', '${m.id}')" class="bg-white text-black px-5 py-2 rounded-xl text-[9px] font-black uppercase shadow-xl transform translate-y-4 group-hover:translate-y-0 transition duration-300 delay-75">Download</button>
+                            <button onclick="handleDownload('${m.download}', '${m.id}')" class="bg-white text-black px-5 py-2 rounded-xl text-[9px] font-black uppercase transform translate-y-4 group-hover:translate-y-0 transition duration-300 delay-75">Download</button>
                         </div>
-                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-[7px] font-black uppercase shadow-lg">${m.year}</div>
+                        <div class="absolute top-2 right-2 bg-red-600 text-[8px] font-black px-2 py-1 rounded shadow-lg uppercase">${m.year}</div>
                     </div>
                     <div class="p-3">
-                        <h4 class="text-[10px] font-black truncate uppercase text-zinc-100">${m.title}</h4>
+                        <h4 class="text-[10px] font-black truncate text-zinc-100 uppercase tracking-tight">${m.title}</h4>
                         <p class="text-[8px] text-zinc-500 font-bold uppercase mt-1 tracking-widest">${m.category}</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        // SEARCH
         function searchMovies() {
             const val = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allMovies.filter(m => m.title.toLowerCase().includes(val));
-            renderHome(filtered);
-        }
-        function searchMoviesMobile() {
-            const val = document.getElementById('searchInputMobile').value.toLowerCase();
-            const filtered = allMovies.filter(m => m.title.toLowerCase().includes(val));
-            renderHome(filtered);
+            renderHome(allMovies.filter(m => m.title.toLowerCase().includes(val)));
         }
 
         function filterMovies(cat) {
@@ -300,24 +257,18 @@
         }
 
         function renderAdmin() {
-            const list = document.getElementById('adminMovieList');
-            list.innerHTML = allMovies.map(m => `
+            document.getElementById('adminMovieList').innerHTML = allMovies.map(m => `
                 <div class="flex items-center justify-between glass p-3 rounded-xl border border-white/5">
                     <div class="flex items-center gap-4">
-                        <img src="${m.poster}" class="h-12 w-10 object-cover rounded shadow-lg">
-                        <div>
-                            <p class="font-black text-[10px] uppercase text-white">${m.title}</p>
-                            <p class="text-[8px] text-zinc-500 uppercase">${m.category} • ${m.year}</p>
-                        </div>
+                        <img src="${m.poster}" class="h-10 w-8 object-cover rounded shadow-lg">
+                        <p class="font-black text-[10px] uppercase">${m.title}</p>
                     </div>
-                    <button onclick="deleteMovie('${m.id}')" class="h-9 w-9 rounded-full bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition flex items-center justify-center"><i class="fa fa-trash-alt text-xs"></i></button>
+                    <button onclick="deleteMovie('${m.id}')" class="h-8 w-8 rounded-full bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white transition flex items-center justify-center"><i class="fa fa-trash-alt text-[10px]"></i></button>
                 </div>
             `).join('');
         }
-
-        function deleteMovie(id) { if(confirm("Urashaka gusiba iyi filime?")) database.ref('movies/' + id).remove(); }
+        function deleteMovie(id) { if(confirm("Siba?")) database.ref('movies/' + id).remove(); }
     </script>
-    
     <script src="https://pl29262747.profitablecpmratenetwork.com/b8/8c/78/b88c7804903a5c3aad18a89feff2edf3.js"></script>
 </body>
 </html>
