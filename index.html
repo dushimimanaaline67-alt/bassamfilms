@@ -18,8 +18,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .glass { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .red-gradient { background: linear-gradient(45deg, #e50914, #ff4d4d); }
+        .skeleton { background: linear-gradient(90deg, #121212 25%, #1d1d1d 50%, #121212 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 1.5rem; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .movie-card:hover img { transform: scale(1.05); transition: 0.5s; }
     </style>
 </head>
 <body>
@@ -33,82 +34,79 @@
     </nav>
 
     <section id="page-home" class="page active pt-20 min-h-screen">
-        <div class="px-4 md:px-10 mb-10 mt-6">
-            <div class="relative h-[250px] md:h-[350px] w-full rounded-[2.5rem] overflow-hidden flex flex-col justify-center p-8 border border-white/5 shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059" class="absolute inset-0 w-full h-full object-cover opacity-40">
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+        <div class="px-4 md:px-10 mt-6">
+            <div class="relative h-[200px] md:h-[300px] w-full rounded-[2.5rem] overflow-hidden flex flex-col justify-center p-8 border border-white/5 shadow-2xl bg-zinc-900">
+                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059" class="absolute inset-0 w-full h-full object-cover opacity-30">
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
                 <div class="relative z-10">
                     <h2 class="text-5xl md:text-7xl font-black uppercase italic leading-none tracking-tighter">BASSAM <span class="text-red-600">FILMS</span></h2>
-                    <p class="text-white text-xs md:text-base font-bold uppercase mt-2 bg-red-600 w-fit px-3 py-1 rounded">REBA FILM UNA DOWNILOADINGE KUBUNTU</p>
+                    <p class="text-white text-[10px] md:text-sm font-bold uppercase mt-2 bg-red-600 w-fit px-3 py-1 rounded shadow-lg">REBA FILM UNA DOWNILOADINGE KUBUNTU</p>
                 </div>
             </div>
         </div>
 
+        <div class="px-4 md:px-10 mt-8 mb-6">
+            <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." class="w-full bg-zinc-900/50 border border-white/10 py-4 px-6 rounded-2xl text-sm outline-none focus:border-red-600 transition">
+        </div>
+
+        <div class="px-4 md:px-10 mb-8 overflow-x-auto no-scrollbar flex gap-2" id="catBar">
+            <button onclick="filterMovies('all')" class="bg-red-600 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase">Zose</button>
+            <button onclick="filterMovies('Action')" class="border border-zinc-800 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase text-zinc-500">Action</button>
+            <button onclick="filterMovies('Season')" class="border border-zinc-800 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase text-zinc-500">Season</button>
+            <button onclick="filterMovies('Indian')" class="border border-zinc-800 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase text-zinc-500">Indian</button>
+        </div>
+
         <div class="px-4 md:px-10 pb-24">
-            <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"></div>
+            <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <div class="skeleton aspect-[2/3]"></div>
+                <div class="skeleton aspect-[2/3]"></div>
+                <div class="skeleton aspect-[2/3]"></div>
+                <div class="skeleton aspect-[2/3]"></div>
+            </div>
         </div>
     </section>
 
     <section id="page-details" class="page pt-20 min-h-screen pb-20">
         <div class="px-4 md:px-10 max-w-7xl mx-auto">
-            <button onclick="showPage('home')" class="text-zinc-500 hover:text-white mb-6 flex items-center gap-2 text-xs font-bold uppercase transition">
-                <i class="fa fa-arrow-left"></i> Subira Inyuma
-            </button>
-
+            <button onclick="showPage('home')" class="text-zinc-500 hover:text-white mb-6 flex items-center gap-2 text-xs font-bold uppercase transition"><i class="fa fa-arrow-left"></i> Subira Inyuma</button>
             <div class="grid lg:grid-cols-3 gap-10">
                 <div class="lg:col-span-2 space-y-6">
-                    <div id="trailerBox" class="aspect-video w-full rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl">
-                        </div>
-                    
+                    <div id="trailerBox" class="aspect-video w-full rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl"></div>
                     <div class="flex flex-wrap gap-4">
-                        <a id="watchBtn" href="#" target="_blank" class="flex-1 min-w-[150px] red-gradient py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition">
-                            <i class="fa fa-play"></i> Reba Filime
-                        </a>
-                        <a id="downloadBtn" href="#" target="_blank" class="flex-1 min-w-[150px] bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition">
-                            <i class="fa fa-download"></i> Download
-                        </a>
+                        <a id="watchBtn" href="#" target="_blank" class="flex-1 min-w-[150px] red-gradient py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition"><i class="fa fa-play"></i> Reba Filime</a>
+                        <a id="downloadBtn" href="#" target="_blank" class="flex-1 min-w-[150px] bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition"><i class="fa fa-download"></i> Download</a>
                     </div>
-
                     <div class="p-6 bg-zinc-900/50 rounded-3xl border border-white/5">
-                        <h2 id="detTitle" class="text-3xl font-black uppercase">---</h2>
+                        <h2 id="detTitle" class="text-3xl font-black uppercase tracking-tighter">---</h2>
                         <div class="flex gap-4 mt-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
                             <span id="detYear">---</span>
                             <span class="text-red-600">●</span>
                             <span id="detCat">---</span>
                             <span class="text-red-600">●</span>
-                            <span id="detSoba" class="text-red-500 italic">---</span>
+                            <span id="detSoba" class="text-red-500 font-black">---</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="space-y-6">
-                    <h3 class="text-sm font-black uppercase text-zinc-500 tracking-widest px-2">Izindi zishobora kugushimisha</h3>
+                    <h3 class="text-sm font-black uppercase text-zinc-300 tracking-widest px-2">Episode Zikurikiyeho</h3>
                     <div id="relatedGrid" class="grid grid-cols-1 gap-4"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="page-login" class="page pt-44 h-screen px-6">
-        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] text-center">
-            <h2 class="text-2xl font-black mb-8 italic text-red-600 uppercase">Admin</h2>
-            <input type="text" id="userIn" placeholder="Username" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl mb-4 outline-none">
-            <input type="password" id="passIn" placeholder="Password" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl mb-4 outline-none">
-            <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black uppercase">Injira</button>
-        </div>
-    </section>
-
-    <section id="page-admin" class="page pt-24 px-4 md:px-10 min-h-screen">
+    <section id="page-admin" class="page pt-24 px-4 md:px-10 min-h-screen pb-20">
         <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-10">
-            <div class="glass p-8 rounded-[2rem] h-fit border border-white/5 sticky top-24">
+            <div class="glass p-8 rounded-[2rem] h-fit border border-white/5">
                 <h3 id="adminTitle" class="font-black text-red-600 mb-6 uppercase text-xs">Ongeramo Filime</h3>
                 <div class="space-y-3">
                     <input type="hidden" id="editId">
                     <input type="text" id="mTitle" placeholder="Izina rya filime" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
                     <input type="text" id="mSoba" placeholder="Umusobanuzi" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
                     <input type="text" id="mYear" placeholder="Umwaka" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
+                    <input type="text" id="mSeries" placeholder="Series Tag (urugero: MoneyHeistS1)" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800 shadow-inner">
                     <input type="text" id="mTrailer" placeholder="YouTube Trailer Link" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
-                    <select id="mCat" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
+                    <select id="mCat" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800 text-zinc-500">
                         <option value="Action">Action</option>
                         <option value="Season">Season</option>
                         <option value="Indian">Indian</option>
@@ -117,9 +115,19 @@
                     <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
                     <input type="text" id="mPoster" placeholder="Poster URL" class="w-full bg-black p-3 rounded-lg text-xs border border-zinc-800">
                     <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black uppercase text-xs">Bika Filime</button>
+                    <button onclick="resetForm()" class="w-full bg-zinc-800 py-3 rounded-lg font-black uppercase text-[10px] mt-2">Hagarika</button>
                 </div>
             </div>
-            <div id="adminMovieList" class="lg:col-span-2 space-y-3 pb-20"></div>
+            <div id="adminMovieList" class="lg:col-span-2 space-y-3"></div>
+        </div>
+    </section>
+
+    <section id="page-login" class="page pt-44 h-screen px-6">
+        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] text-center border border-white/5">
+            <h2 class="text-2xl font-black mb-8 italic text-red-600 uppercase">Admin Access</h2>
+            <input type="text" id="userIn" placeholder="Username" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl mb-4 outline-none">
+            <input type="password" id="passIn" placeholder="Password" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-xl mb-4 outline-none">
+            <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black uppercase">Injira</button>
         </div>
     </section>
 
@@ -149,23 +157,24 @@
 
         database.ref('movies').on('value', (snap) => {
             allMovies = [];
-            snap.forEach((c) => { allMovies.unshift({ id: c.key, ...c.val() }); });
-            renderHome();
+            snap.forEach((c) => { allMovies.push({ id: c.key, ...c.val() }); });
+            allMovies.reverse();
+            renderHome(allMovies);
             renderAdmin();
         });
 
-        function renderHome() {
+        function renderHome(data) {
             const grid = document.getElementById('movieGrid');
-            grid.innerHTML = allMovies.map(m => `
+            grid.innerHTML = data.map(m => `
                 <div onclick="openMovie('${m.id}')" class="group cursor-pointer">
-                    <div class="aspect-[2/3] relative rounded-2xl overflow-hidden border border-white/5 bg-zinc-800">
-                        <img src="${m.poster}" class="w-full h-full object-cover">
+                    <div class="aspect-[2/3] relative rounded-[1.5rem] overflow-hidden border border-white/5 bg-zinc-800">
+                        <img src="${m.poster}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" onload="this.parentElement.classList.remove('skeleton')">
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <i class="fa fa-play-circle text-4xl text-red-600"></i>
                         </div>
                     </div>
                     <h4 class="mt-3 text-[10px] font-black uppercase text-zinc-100 leading-tight">
-                        ${m.title} ${m.soba ? `<span class="text-red-600 ml-1 italic">[soba: ${m.soba}]</span>` : ''}
+                        ${m.title} ${m.soba ? `<span class="text-red-600 ml-1 italic font-bold">${m.soba}</span>` : ''}
                     </h4>
                 </div>
             `).join('');
@@ -173,51 +182,70 @@
 
         function openMovie(id) {
             const m = allMovies.find(item => item.id === id);
-            if(!m) return;
-
             document.getElementById('detTitle').innerText = m.title;
             document.getElementById('detYear').innerText = m.year;
             document.getElementById('detCat').innerText = m.category;
-            document.getElementById('detSoba').innerText = m.soba ? `Soba: ${m.soba}` : '';
+            document.getElementById('detSoba').innerText = m.soba || '';
             document.getElementById('watchBtn').href = m.link;
             document.getElementById('downloadBtn').href = m.download;
 
-            // Trailer
             const videoId = m.trailer ? m.trailer.split('v=')[1]?.split('&')[0] || m.trailer.split('/').pop() : '';
             document.getElementById('trailerBox').innerHTML = m.trailer ? 
                 `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>` : 
-                `<img src="${m.poster}" class="w-full h-full object-cover opacity-20">`;
+                `<div class="w-full h-full flex items-center justify-center text-zinc-700 font-black uppercase text-[10px]">No Trailer</div>`;
 
-            // Related
-            const related = allMovies.filter(item => item.id !== id).slice(0, 4);
+            // RELATED LOGIC: If has series tag, show same tag. If not, show same category.
+            let related = [];
+            if(m.series) {
+                related = allMovies.filter(item => item.id !== id && item.series === m.series);
+            } else {
+                related = allMovies.filter(item => item.id !== id && item.category === m.category).slice(0, 5);
+            }
+
             document.getElementById('relatedGrid').innerHTML = related.map(r => `
-                <div onclick="openMovie('${r.id}')" class="flex gap-4 p-2 hover:bg-white/5 rounded-xl transition cursor-pointer">
-                    <img src="${r.poster}" class="h-20 w-16 rounded-lg object-cover">
+                <div onclick="openMovie('${r.id}')" class="flex gap-4 p-2 hover:bg-white/5 rounded-xl transition cursor-pointer border border-transparent hover:border-white/5">
+                    <img src="${r.poster}" class="h-16 w-12 rounded-lg object-cover">
                     <div>
-                        <p class="text-[10px] font-black uppercase text-white">${r.title}</p>
-                        <p class="text-[8px] text-zinc-500 uppercase mt-1">${r.category} • ${r.year}</p>
+                        <p class="text-[9px] font-black uppercase text-white">${r.title}</p>
+                        <p class="text-[7px] text-red-600 font-bold uppercase mt-1">${r.soba || ''}</p>
                     </div>
                 </div>
             `).join('');
-
             showPage('details');
         }
 
-        // ADMIN FUNCTIONS (Nizindi twari dufite)
+        function searchMovies() {
+            const val = document.getElementById('searchInput').value.toLowerCase();
+            renderHome(allMovies.filter(m => m.title.toLowerCase().includes(val)));
+        }
+
+        function filterMovies(cat) {
+            const btns = document.querySelectorAll('#catBar button');
+            btns.forEach(b => { b.classList.remove('bg-red-600'); b.classList.add('border', 'border-zinc-800', 'text-zinc-500'); });
+            event.target.classList.remove('border', 'border-zinc-800', 'text-zinc-500');
+            event.target.classList.add('bg-red-600', 'text-white');
+
+            if(cat === 'all') renderHome(allMovies);
+            else renderHome(allMovies.filter(m => m.category === cat));
+        }
+
         function saveToFirebase() {
             const id = document.getElementById('editId').value;
             const data = {
                 title: document.getElementById('mTitle').value,
                 soba: document.getElementById('mSoba').value,
                 year: document.getElementById('mYear').value,
+                series: document.getElementById('mSeries').value, // NEW TAG
                 trailer: document.getElementById('mTrailer').value,
                 category: document.getElementById('mCat').value,
                 link: document.getElementById('mLink').value,
                 download: document.getElementById('mDL').value,
                 poster: document.getElementById('mPoster').value
             };
-            if(id) database.ref('movies/' + id).update(data).then(() => resetForm());
-            else database.ref('movies').push(data).then(() => resetForm());
+            if(data.title) {
+                if(id) database.ref('movies/' + id).update(data).then(() => resetForm());
+                else database.ref('movies').push(data).then(() => resetForm());
+            }
         }
 
         function resetForm() {
@@ -229,23 +257,28 @@
         function renderAdmin() {
             document.getElementById('adminMovieList').innerHTML = allMovies.map(m => `
                 <div class="flex items-center justify-between glass p-3 rounded-xl border border-white/5">
-                    <div class="flex items-center gap-4 text-[10px] font-black uppercase">
+                    <div class="flex items-center gap-4 text-[9px] font-black uppercase">
                         <img src="${m.poster}" class="h-10 w-8 object-cover rounded">
-                        <p>${m.title}</p>
+                        <div>
+                            <p>${m.title}</p>
+                            <p class="text-[7px] text-zinc-500 italic">${m.series || 'No Tag'}</p>
+                        </div>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="editMovie('${m.id}')" class="h-8 w-8 rounded-full bg-blue-600/10 text-blue-500 flex items-center justify-center"><i class="fa fa-edit"></i></button>
-                        <button onclick="deleteMovie('${m.id}')" class="h-8 w-8 rounded-full bg-red-600/10 text-red-500 flex items-center justify-center"><i class="fa fa-trash"></i></button>
+                        <button onclick="editMovie('${m.id}')" class="h-7 w-7 rounded-full bg-blue-600/10 text-blue-500 flex items-center justify-center"><i class="fa fa-edit"></i></button>
+                        <button onclick="deleteMovie('${m.id}')" class="h-7 w-7 rounded-full bg-red-600/10 text-red-500 flex items-center justify-center"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
         }
+
         function editMovie(id) {
             const m = allMovies.find(i => i.id === id);
             document.getElementById('editId').value = m.id;
             document.getElementById('mTitle').value = m.title;
             document.getElementById('mSoba').value = m.soba || '';
             document.getElementById('mYear').value = m.year;
+            document.getElementById('mSeries').value = m.series || '';
             document.getElementById('mTrailer').value = m.trailer || '';
             document.getElementById('mCat').value = m.category;
             document.getElementById('mLink').value = m.link;
@@ -254,6 +287,7 @@
             document.getElementById('adminTitle').innerText = "HINDURA FILIME";
             showPage('admin');
         }
+
         function deleteMovie(id) { if(confirm("Siba?")) database.ref('movies/' + id).remove(); }
     </script>
 </body>
