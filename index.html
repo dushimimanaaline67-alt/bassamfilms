@@ -30,7 +30,6 @@
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* LOADING SKELETON ANIMATION */
         .skeleton {
             background: linear-gradient(90deg, #14532d 25%, #166534 50%, #14532d 75%);
             background-size: 200% 100%;
@@ -205,7 +204,6 @@
     </footer>
 
     <script>
-        // FIREBASE V8 CONFIGURATION (IHAMAGARA DATABASE NSHYA YAWE YA DEFAULT DIRECTLY)
         const firebaseConfig = {
             apiKey: "AIzaSyDWEpgmO7OdjgRG3x-AsGDTrZCepZf1wPg",
             authDomain: "agasobanuyebox-6a6e8.firebaseapp.com",
@@ -220,7 +218,6 @@
         const database = firebase.database();
         let allMovies = [];
 
-        // NAVIGATION & LOADING UTILITIES
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${id}`).classList.add('active');
@@ -241,7 +238,6 @@
             else alert("Password ntabwo ariyo!");
         }
 
-        // REALTIME DATABASE REAL-TIME LISTENER
         database.ref('movies').on('value', (snap) => {
             allMovies = [];
             snap.forEach((c) => { allMovies.push({ id: c.key, ...c.val() }); });
@@ -251,12 +247,10 @@
             startAutoSlider();
         });
 
-        // RENDER FILMS ON HOME
         function renderHome(data) {
             const grid = document.getElementById('movieGrid');
             const trendingGrid = document.getElementById('trendingGrid');
 
-            // 1. Trending Card Engine
             const trendingMovies = data.filter(m => m.isTrending);
             if(trendingMovies.length > 0) {
                 trendingGrid.innerHTML = trendingMovies.map(m => `
@@ -273,7 +267,6 @@
                 trendingGrid.innerHTML = `<p class="text-xs text-zinc-600 font-bold col-span-full uppercase">Nta film za Hot ziri kugaragara ubu...</p>`;
             }
 
-            // 2. Normal Grid Engine
             if(data.length > 0) {
                 grid.innerHTML = data.map(m => `
                     <div onclick="openMovie('${m.id}')" class="group cursor-pointer">
@@ -291,7 +284,6 @@
             }
         }
 
-        // MOVIE DETAILS VIEW
         function openMovie(id) {
             const m = allMovies.find(item => item.id === id);
             document.getElementById('detTitle').innerText = m.title;
@@ -319,7 +311,6 @@
             showPage('details');
         }
 
-        // FILTERS & SEARCH
         function filterMovies(cat) {
             const btns = document.querySelectorAll('.cat-btn');
             btns.forEach(b => b.classList.remove('active-cat'));
@@ -333,7 +324,6 @@
             renderHome(allMovies.filter(m => m.title.toLowerCase().includes(val)));
         }
 
-        // AUTOMATIC SLIDER IN HOT MOVIES (EVERY 1 SECOND)
         let sliderInterval;
         function startAutoSlider() {
             const slider = document.getElementById('trendingGrid');
@@ -344,7 +334,7 @@
             }, 1000);
         }
 
-        // BACKEND CONTROL PANEL (ADMIN LOGIC)
+        // KUKOSORA BACKEND LOGIC (SAVE & RESET)
         function saveToFirebase() {
             const id = document.getElementById('editId').value;
             const data = {
@@ -358,20 +348,20 @@
                 poster: document.getElementById('mPoster').value,
                 isTrending: document.getElementById('mTrending').checked
             };
-            if(data.title) {
-                if(id) {
-                    database.ref('movies/' + id).update(data).then(() => {
-                        resetForm();
-                        alert("Filime yavuguruwe neza!");
-                    });
-                } else {
-                    database.ref('movies').push(data).then(() => { 
-                        resetForm(); 
-                        alert("Filime nshya yajyaho neza!"); 
-                    });
-                }
-            } else {
+
+            if(!data.title) {
                 alert("Ugomba kwandika nibura Izina rya Filime!");
+                return;
+            }
+
+            if(id) {
+                database.ref('movies/' + id).update(data)
+                    .then(() => { resetForm(); alert("Filime yavuguruwe neza!"); })
+                    .catch(err => alert("Error: " + err.message));
+            } else {
+                database.ref('movies').push(data)
+                    .then(() => { resetForm(); alert("Filime nshya yajyaho neza!"); })
+                    .catch(err => alert("Error: " + err.message));
             }
         }
 
@@ -405,28 +395,24 @@
         }
 
         function deleteMovie(id) { 
-            if(confirm("Ese urashaka gusiba iyi filime burundu muri amaseva?")) {
+            if(confirm("Ese urashaka gusiba iyi filime burundu?")) {
                 database.ref('movies/' + id).remove(); 
             }
         }
 
+        // IFUNCTION YA RESET FORM IKOSOYE NEZA
         function resetForm() {
             document.getElementById('editId').value = '';
-            document.querySelectorAll('#page-admin input[type="text"]').forEach(i => i.value = '');
+            document.getElementById('mTitle').value = '';
+            document.getElementById('mSoba').value = '';
+            document.getElementById('mYear').value = '';
+            document.getElementById('mTrailer').value = '';
+            document.getElementById('mCat').selectedIndex = 0;
+            document.getElementById('mLink').value = '';
+            document.getElementById('mDL').value = '';
+            document.getElementById('mPoster').value = '';
             document.getElementById('mTrending').checked = false;
         }
     </script>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1700681411608524" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1700681411608524" data-ad-slot="5038531268" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1700681411608524" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-1700681411608524" data-ad-slot="7131569494"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1700681411608524" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:inline-block;width:500px;height:50px" data-ad-client="ca-pub-1700681411608524" data-ad-slot="9346354664"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </body>
 </html>
