@@ -3,132 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BASSAM FILMS | Agasobanuye</title>
+    <meta name="description" content="BASSAM FILMS - Reba filime nziza za Kinyarwanda na mahanga, ubuntu.">
+    <title>BASSAM FILMS | Reba Filime</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1700681411608524" crossorigin="anonymous"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { background-color: #050505; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .page { display: none; }
-        .active { display: block; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .glass { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .red-gradient { background: linear-gradient(45deg, #e50914, #ff4d4d); }
-        
-        /* LOADING LINE */
-        #loading-line { position: fixed; top: 0; left: 0; height: 3px; background: #e50914; z-index: 9999; width: 0%; transition: width 0.3s, opacity 0.3s; box-shadow: 0 0 10px #e50914; }
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap');
 
-        /* SKELETON ANIMATION */
-        .skeleton { background: #121212; position: relative; overflow: hidden; border-radius: 1.5rem; }
-        .skeleton::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: shimer 1.5s infinite; }
-        @keyframes shimer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+        :root{
+            --bg: #0b0b0d;
+            --surface: #181818;
+            --surface-2: #232323;
+            --accent: #e50914;
+            --accent-dim: #b20710;
+            --text: #f5f5f1;
+            --text-dim: #a3a3a3;
+        }
 
-        /* BLUR BG */
-        #blur-bg { position: fixed; inset: 0; z-index: -1; background-size: cover; background-position: center; filter: blur(60px) brightness(0.2); transform: scale(1.1); transition: 0.7s; display: none; }
+        *{ -webkit-tap-highlight-color: transparent; }
+        html{ scroll-behavior: smooth; }
+        body{
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        h1,h2,h3,.display{ font-family:'Bebas Neue', 'Inter', sans-serif; letter-spacing:0.02em; }
 
-        /* PLAY OVERLAY */
-        .play-overlay { background: rgba(0,0,0,0.5); opacity: 0; transition: 0.3s; display: flex; align-items: center; justify-content: center; position: absolute; inset: 0; }
-        .group:hover .play-overlay { opacity: 1; }
-        .play-btn { background: #e50914; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: scale(0.6); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .group:hover .play-btn { transform: scale(1); }
+        /* Accessibility: visible focus + skip link */
+        a, button, input, textarea, [tabindex]{ outline-offset: 2px; }
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
+            outline: 3px solid #fff; outline-offset: 3px; border-radius: 6px;
+        }
+        .skip-link{
+            position:absolute; left:-999px; top:0; background:var(--accent); color:#fff;
+            padding:12px 20px; z-index:9999; font-weight:700; border-radius:0 0 10px 0;
+        }
+        .skip-link:focus{ left:0; }
 
-        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 200; }
+        .page{ display:none; }
+        .active{ display:block; animation: fadeIn 0.4s cubic-bezier(0.16,1,0.3,1); }
+        @keyframes fadeIn{ from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
+
+        .glass{ background: rgba(10,10,12,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .red-gradient{ background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%); box-shadow: 0 4px 20px rgba(229,9,20,0.3); }
+        .red-gradient:hover{ background: linear-gradient(135deg, #ff1e27 0%, var(--accent) 100%); box-shadow: 0 6px 26px rgba(229,9,20,0.5); }
+
+        #loading-line{ position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--accent),#ff4d4d); z-index:9999; width:0%; transition:width .4s ease, opacity .3s; box-shadow:0 0 15px var(--accent); }
+
+        .skeleton{ background:#151515; position:relative; overflow:hidden; border-radius:0.5rem; }
+        .skeleton::after{ content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent); animation:shimmer 1.5s infinite; }
+        @keyframes shimmer{ from{transform:translateX(-100%);} to{transform:translateX(100%);} }
+
+        #blur-bg{ position:fixed; inset:0; z-index:-1; background-size:cover; background-position:center; filter:blur(70px) brightness(0.15); transform:scale(1.15); transition:0.8s ease; display:none; }
+
+        .no-scrollbar::-webkit-scrollbar{ display:none; }
+        .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+
+        /* ---------- NAV ---------- */
+        #mainNav{
+            position:fixed; top:0; left:0; right:0; z-index:100;
+            padding:14px 16px; display:flex; align-items:center; justify-content:space-between;
+            background:linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+            transition: background .35s ease;
+        }
+        #mainNav.nav-solid{ background: #0b0b0d; box-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+        @media (min-width:768px){ #mainNav{ padding:16px 48px; } }
+
+        #searchWrap{ width:0; overflow:hidden; transition:width .3s ease; display:flex; align-items:center; background:rgba(0,0,0,0.75); border:1px solid rgba(255,255,255,0.15); border-radius:6px; }
+        #searchWrap.open{ width:min(60vw,280px); }
+        #searchWrap input{ background:transparent; border:none; color:#fff; padding:9px 12px; width:100%; outline:none; font-size:14px; }
+
+        /* ---------- HERO ---------- */
+        .hero{ position:relative; width:100%; height:78vh; min-height:420px; overflow:hidden; }
+        .hero-bg{ position:absolute; inset:0; background-size:cover; background-position:center 20%; animation: kenburns 22s ease-in-out infinite alternate; }
+        @keyframes kenburns{ from{ transform:scale(1); } to{ transform:scale(1.09); } }
+        .hero-fade{ position:absolute; inset:0; background: linear-gradient(0deg, var(--bg) 2%, transparent 45%), linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 55%); }
+        .hero-content{ position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:0 20px 56px; max-width:640px; }
+        @media (min-width:768px){ .hero-content{ padding:0 48px 72px; } }
+        .hero-title{ font-size:2.8rem; line-height:1; color:#fff; text-shadow:0 2px 18px rgba(0,0,0,0.6); }
+        @media (min-width:768px){ .hero-title{ font-size:4.4rem; } }
+        .hero-desc{ color:#e5e5e5; font-size:0.95rem; margin-top:12px; max-width:52ch; line-height:1.5; }
+
+        /* ---------- GENRE CHIPS ---------- */
+        #chipBar{ position:sticky; top:64px; z-index:40; display:flex; gap:8px; overflow-x:auto; padding:14px 16px; background:linear-gradient(180deg, var(--bg) 60%, transparent); }
+        @media (min-width:768px){ #chipBar{ padding:16px 48px; top:72px; } }
+        .chip{ flex:0 0 auto; padding:9px 18px; min-height:40px; border-radius:999px; background:var(--surface); border:1px solid rgba(255,255,255,0.1); color:var(--text-dim); font-size:13px; font-weight:600; white-space:nowrap; transition: all .2s ease; }
+        .chip:hover{ border-color:rgba(255,255,255,0.3); color:#fff; }
+        .chip.active{ background:#fff; color:#000; border-color:#fff; }
+
+        /* ---------- ROWS ---------- */
+        .row{ margin: 34px 0; }
+        .row-title{ font-size:1.3rem; padding:0 16px; margin-bottom:12px; color:#f2f2f2; font-weight:800; font-family:'Inter',sans-serif; letter-spacing:0; }
+        @media (min-width:768px){ .row-title{ padding:0 48px; } }
+        .row-track{ display:flex; gap:10px; overflow-x:auto; padding:10px 16px 20px; scroll-snap-type:x proximity; }
+        @media (min-width:768px){ .row-track{ padding:10px 48px 24px; gap:12px; } }
+
+        .card-wrap{ position:relative; flex:0 0 auto; width:130px; scroll-snap-align:start; cursor:pointer; display:flex; align-items:flex-end; }
+        @media (min-width:640px){ .card-wrap{ width:170px; } }
+
+        .rank-num{
+            font-family:'Bebas Neue', sans-serif; font-size:6.5rem; line-height:1; color:transparent;
+            -webkit-text-stroke: 2px #3a3a3a; margin-right:-22px; user-select:none; align-self:flex-end;
+            transition: -webkit-text-stroke-color .3s ease;
+        }
+        .card-wrap:hover .rank-num, .card-wrap:focus-within .rank-num{ -webkit-text-stroke-color: var(--accent); }
+
+        .card{ position:relative; aspect-ratio:2/3; width:100%; border-radius:8px; overflow:hidden; background:var(--surface); border:1px solid rgba(255,255,255,0.06); transition: transform .28s cubic-bezier(0.34,1.56,0.64,1), box-shadow .28s ease, z-index 0s; z-index:1; }
+        .card img{ width:100%; height:100%; object-fit:cover; display:block; }
+        .card-wrap:hover .card, .card-wrap:focus-within .card{ transform:scale(1.12) translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.6); z-index:5; }
+
+        .card-overlay{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 55%); opacity:0; transition:opacity .28s ease; display:flex; flex-direction:column; justify-content:flex-end; padding:10px; }
+        .card-wrap:hover .card-overlay, .card-wrap:focus-within .card-overlay{ opacity:1; }
+        .play-btn-sm{ width:30px; height:30px; border-radius:50%; background:#fff; color:#000; display:flex; align-items:center; justify-content:center; margin-bottom:6px; font-size:12px; }
+        .card-title{ font-size:11px; font-weight:700; color:#fff; line-height:1.2; }
+
+        .genre-badge{ display:inline-block; padding:4px 12px; border-radius:999px; background:rgba(229,9,20,0.15); color:#ff5b62; border:1px solid rgba(229,9,20,0.35); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
+
+        .grid-results{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; padding:0 16px 60px; }
+        @media (min-width:640px){ .grid-results{ grid-template-columns:repeat(3,1fr); } }
+        @media (min-width:768px){ .grid-results{ grid-template-columns:repeat(4,1fr); padding:0 48px 60px; } }
+        @media (min-width:1024px){ .grid-results{ grid-template-columns:repeat(5,1fr); } }
+        .grid-results .card-wrap{ width:100%; }
+        .grid-results .rank-num{ display:none; }
+
+        .play-overlay{ background:rgba(0,0,0,0.55); opacity:0; transition:opacity .3s; display:flex; align-items:center; justify-content:center; position:absolute; inset:0; }
+        .group:hover .play-overlay{ opacity:1; }
+        .play-btn{ background:var(--accent); width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; transform:scale(0.6); transition:.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 8px 24px rgba(229,9,20,0.4); }
+        .group:hover .play-btn{ transform:scale(1); }
+
+        @media (prefers-reduced-motion: reduce){
+            *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+        }
     </style>
 </head>
-<body>
+<body class="selection:bg-red-600 selection:text-white">
 
+    <a href="#main" class="skip-link">Simbuka uje ku byanditswe</a>
     <div id="loading-line"></div>
     <div id="blur-bg"></div>
 
-    <a href="https://wa.me/250781626371" target="_blank" class="whatsapp-float shadow-lg"><i class="fab fa-whatsapp"></i></a>
-
-    <nav class="fixed w-full z-[100] px-4 md:px-10 py-3 flex justify-between items-center glass">
-        <div onclick="showPage('home')" class="flex items-center gap-4 cursor-pointer">
-            <div class="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-xl shadow-xl">BF</div>
-            <h1 class="text-white text-lg font-black uppercase tracking-tighter">BASSAM FILMS</h1>
+    <nav id="mainNav" aria-label="Ibikubiye mu rubuga">
+        <div onclick="showPage('home')" class="flex items-center gap-3 cursor-pointer group" role="button" tabindex="0" onkeydown="if(event.key==='Enter')showPage('home')" aria-label="Subira ahabanza">
+            <div class="h-10 w-10 md:h-11 md:w-11 bg-red-600 rounded flex items-center justify-center font-extrabold italic text-lg shadow-lg shadow-red-600/20 transform group-hover:scale-105 transition duration-300">BF</div>
+            <h1 class="text-white text-lg md:text-2xl font-black uppercase tracking-wider display">BASSAM FILMS</h1>
         </div>
-        <div class="flex gap-2">
-            <button onclick="showPage('login')" class="red-gradient px-4 py-1.5 rounded-full text-[10px] font-black uppercase shadow-lg">Admin</button>
+        <div class="flex items-center gap-2 md:gap-4">
+            <div id="searchWrap">
+                <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." aria-label="Shakisha filime">
+            </div>
+            <button onclick="toggleSearch()" aria-label="Fungura ishakisha" class="h-11 w-11 flex items-center justify-center text-zinc-200 hover:text-white transition">
+                <i class="fa fa-search"></i>
+            </button>
+            <button onclick="showPage('login')" class="bg-zinc-800/80 hover:bg-zinc-700 text-zinc-200 hover:text-white px-4 md:px-5 py-2 rounded text-xs font-bold uppercase tracking-wide transition border border-white/10 shadow-md">Admin</button>
         </div>
     </nav>
 
-    <section id="page-home" class="page active pt-24 min-h-screen">
-        <div class="px-4 md:px-10 mt-4 mb-6">
-            <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." class="w-full bg-zinc-900/50 border border-white/10 py-4 px-6 rounded-2xl text-sm outline-none focus:border-red-600 transition backdrop-blur-sm">
+    <main id="main">
+
+    <section id="page-home" class="page active min-h-screen">
+        <div id="heroSection">
+            <div class="hero">
+                <div class="hero-bg skeleton"></div>
+            </div>
         </div>
-        <div id="movieGrid" class="px-4 md:px-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 pb-20">
-            <div class="space-y-3"><div class="aspect-[2/3] skeleton"></div><div class="h-3 w-2/3 skeleton"></div></div>
-            <div class="space-y-3"><div class="aspect-[2/3] skeleton"></div><div class="h-3 w-2/3 skeleton"></div></div>
-            <div class="space-y-3"><div class="aspect-[2/3] skeleton"></div><div class="h-3 w-2/3 skeleton"></div></div>
-            <div class="space-y-3"><div class="aspect-[2/3] skeleton"></div><div class="h-3 w-2/3 skeleton"></div></div>
-        </div>
+        <div id="chipBar" class="no-scrollbar" role="tablist" aria-label="Hitamo ubwoko bw'amafilime"></div>
+        <div id="searchResults" class="hidden pt-2"></div>
+        <div id="rowsContainer" class="pb-16"></div>
     </section>
 
-    <section id="page-details" class="page pt-24 min-h-screen pb-20">
-        <div class="px-4 md:px-10 max-w-6xl mx-auto">
-            <button onclick="showPage('home')" class="mb-6 text-[10px] text-zinc-400 font-black uppercase hover:text-white transition">← Subira Inyuma</button>
-            <div id="trailerBox" class="aspect-video w-full rounded-3xl bg-zinc-900 overflow-hidden shadow-2xl border border-white/5"></div>
-            
-            <div class="flex flex-wrap gap-4 mt-8">
-                <a id="watchBtn" href="#" target="_blank" class="flex-1 min-w-[140px] red-gradient py-4 rounded-2xl text-center font-black uppercase text-sm shadow-xl flex items-center justify-center gap-2"><i class="fa fa-play"></i> Reba Filime</a>
-                <a id="downloadBtn" href="#" target="_blank" class="flex-1 min-w-[140px] bg-white text-black py-4 rounded-2xl text-center font-black uppercase text-sm shadow-xl flex items-center justify-center gap-2"><i class="fa fa-download"></i> Download</a>
+    <section id="page-details" class="page pt-24 min-h-screen pb-24">
+        <div class="px-4 md:px-8 max-w-5xl mx-auto">
+            <button onclick="showPage('home')" class="mb-6 flex items-center gap-2 text-xs text-zinc-400 font-bold uppercase hover:text-white transition group">
+                <i class="fa fa-arrow-left transition group-hover:-translate-x-1" aria-hidden="true"></i> Subira Inyuma
+            </button>
+
+            <div id="detailsHeader" class="mb-5"></div>
+
+            <div id="trailerBox" class="aspect-video w-full rounded-2xl bg-zinc-900/80 overflow-hidden shadow-2xl border border-white/10"></div>
+
+            <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                <a id="watchBtn" href="#" target="_blank" rel="noopener" class="flex-1 red-gradient py-4 rounded-xl text-center font-bold uppercase tracking-wide text-sm flex items-center justify-center gap-2.5 transition duration-300 transform active:scale-[0.98]"><i class="fa fa-play text-xs" aria-hidden="true"></i> Reba Filime</a>
+                <a id="downloadBtn" href="#" target="_blank" rel="noopener" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white py-4 rounded-xl text-center font-bold uppercase tracking-wide text-sm flex items-center justify-center gap-2.5 transition duration-300 border border-white/10 shadow-lg transform active:scale-[0.98]"><i class="fa fa-download text-xs" aria-hidden="true"></i> Download</a>
             </div>
 
-            <div class="mt-12 p-6 bg-zinc-900/40 rounded-3xl border border-white/5 backdrop-blur-md">
-                <h3 class="text-xs font-black uppercase text-red-600 mb-4">Siga ubutumwa</h3>
-                <div class="space-y-3">
-                    <input type="text" id="comName" placeholder="Izina ryawe" class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs outline-none text-white focus:border-red-600">
-                    <textarea id="comMsg" placeholder="Andika hano..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs outline-none h-20 text-white focus:border-red-600"></textarea>
-                    <button onclick="sendComment()" class="red-gradient px-6 py-2.5 rounded-xl font-black uppercase text-[10px]">Ohereza</button>
+            <div class="mt-12 p-6 md:p-8 bg-zinc-900/50 rounded-2xl border border-white/10 shadow-xl">
+                <h3 class="text-sm font-extrabold uppercase text-red-500 tracking-wider mb-5 flex items-center gap-2"><i class="fa fa-comments" aria-hidden="true"></i> Siga ubutumwa</h3>
+                <div class="space-y-4">
+                    <label class="sr-only" for="comName">Izina ryawe</label>
+                    <input type="text" id="comName" placeholder="Izina ryawe" class="w-full bg-black/40 border border-zinc-800 p-4 rounded-xl text-sm outline-none text-white focus:border-red-600 transition">
+                    <label class="sr-only" for="comMsg">Ubutumwa bwawe</label>
+                    <textarea id="comMsg" placeholder="Andika hano..." class="w-full bg-black/40 border border-zinc-800 p-4 rounded-xl text-sm outline-none h-28 text-white focus:border-red-600 transition resize-none"></textarea>
+                    <button onclick="sendComment()" class="red-gradient px-8 py-3.5 rounded-xl font-bold uppercase text-xs tracking-wide transition transform active:scale-95">Ohereza</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="page-login" class="page pt-44 h-screen px-6">
-        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] text-center border border-white/5 shadow-2xl">
-            <h2 class="text-2xl font-black mb-8 text-red-600 italic uppercase">Admin Access</h2>
+    <section id="page-login" class="page pt-32 h-screen px-4">
+        <div class="max-w-md mx-auto glass p-10 rounded-3xl text-center shadow-2xl border border-white/10">
+            <div class="h-14 w-14 bg-red-600/10 text-red-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-5"><i class="fa fa-lock" aria-hidden="true"></i></div>
+            <h2 class="text-2xl font-black mb-2 text-white uppercase tracking-tight">Admin Access</h2>
+            <p class="text-xs text-zinc-400 mb-8">Injiza ibiranga konti yawe kugira ngo winjire</p>
             <div class="space-y-4">
-                <input type="text" id="userIn" placeholder="Username" class="w-full bg-black border border-zinc-800 p-4 rounded-xl outline-none text-white">
-                <input type="password" id="passIn" placeholder="Password" class="w-full bg-black border border-zinc-800 p-4 rounded-xl outline-none text-white">
-                <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-black uppercase shadow-lg">Injira</button>
+                <label class="sr-only" for="userIn">Username</label>
+                <input type="text" id="userIn" placeholder="Username" class="w-full bg-black/40 border border-zinc-800 p-4 rounded-xl outline-none text-white text-sm focus:border-red-600 transition">
+                <label class="sr-only" for="passIn">Password</label>
+                <input type="password" id="passIn" placeholder="Password" class="w-full bg-black/40 border border-zinc-800 p-4 rounded-xl outline-none text-white text-sm focus:border-red-600 transition">
+                <button onclick="handleLogin()" class="w-full red-gradient py-4 rounded-xl font-bold uppercase tracking-wide text-sm transition mt-2 transform active:scale-[0.98]">Injira</button>
             </div>
         </div>
     </section>
 
-    <section id="page-admin" class="page pt-28 px-4 md:px-10 min-h-screen pb-20">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-black text-red-600 uppercase italic">Admin Dashboard</h2>
-                <button onclick="showPage('home')" class="bg-zinc-800 px-4 py-2 rounded-lg text-[10px] font-bold">LOGOUT</button>
+    <section id="page-admin" class="page pt-24 px-4 md:px-12 min-h-screen pb-24 max-w-7xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10 bg-zinc-900/40 p-6 rounded-2xl border border-white/10">
+            <div>
+                <h2 class="text-2xl font-black text-white uppercase tracking-tight">Admin Dashboard</h2>
+                <p class="text-xs text-red-500 font-medium">Bungabunga amafilime yose ahandi</p>
             </div>
-            
-            <div class="grid lg:grid-cols-2 gap-10">
-                <div class="glass p-8 rounded-3xl border border-white/5 h-fit">
-                    <h3 class="text-xs font-black mb-4 uppercase">Ongeramo Filime</h3>
-                    <div class="space-y-3">
-                        <input type="text" id="mTitle" placeholder="Izina rya filime" class="w-full bg-black p-3 rounded-lg border border-zinc-800 text-xs">
-                        <input type="text" id="mSoba" placeholder="Umusobanuzi" class="w-full bg-black p-3 rounded-lg border border-zinc-800 text-xs">
-                        <input type="text" id="mPoster" placeholder="Poster URL" class="w-full bg-black p-3 rounded-lg border border-zinc-800 text-xs">
-                        <input type="text" id="mLink" placeholder="Watch Link (YouTube)" class="w-full bg-black p-3 rounded-lg border border-zinc-800 text-xs">
-                        <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-black p-3 rounded-lg border border-zinc-800 text-xs">
-                        <button onclick="saveToFirebase()" class="w-full red-gradient py-3 rounded-lg font-black text-xs uppercase mt-4">Bika Filime</button>
+            <button onclick="showPage('home')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition self-start sm:self-auto border border-white/10">LOGOUT</button>
+        </div>
+
+        <div class="grid lg:grid-cols-5 gap-8">
+            <div class="lg:col-span-2 glass p-8 rounded-2xl border border-white/10 h-fit shadow-xl">
+                <h3 class="text-sm font-extrabold mb-6 uppercase tracking-wider text-zinc-300 flex items-center gap-2"><i class="fa fa-plus-circle text-red-500" aria-hidden="true"></i> Ongeramo Filime</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5" for="mTitle">Izina rya filime</label>
+                        <input type="text" id="mTitle" placeholder="rugero: Money Heist" class="w-full bg-black/40 p-3.5 rounded-xl border border-zinc-800 text-sm focus:border-red-600 outline-none text-white transition">
                     </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5" for="mSoba">Umusobanuzi</label>
+                        <input type="text" id="mSoba" placeholder="rugero: Rocky" class="w-full bg-black/40 p-3.5 rounded-xl border border-zinc-800 text-sm focus:border-red-600 outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5" for="mGenre">Ubwoko bwa Filime</label>
+                        <select id="mGenre" class="w-full bg-black/40 p-3.5 rounded-xl border border-zinc-800 text-sm focus:border-red-600 outline-none text-white transition">
+                            <option value="">-- Hitamo Ubwoko --</option>
+                            <option value="Action">Action</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Thriller">Thriller</option>
+                            <option value="Animation">Animation</option>
+                            <option value="Documentary">Documentary</option>
+                            <option value="Sci-Fi">Sci-Fi</option>
+                            <option value="Adventure">Adventure</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5" for="mPoster">Poster URL</label>
+                        <input type="text" id="mPoster" placeholder="https://image-url.com/pic.jpg" class="w-full bg-black/40 p-3.5 rounded-xl border border-zinc-800 text-sm focus:border-red-600 outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5" for="mLink">Watch Link (YouTube)</label>
+                        <input type="text" id="mLink" placeholder="https://youtube.com/watch?v=..." class="w-full bg-black/40 p-3.5 rounded-xl border border-zinc-800 text-sm focus:border-red-600 outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5" for="mDL">Download Link</label>
+                        <input type="text" id="mDL" placeholder="https://mega.nz/file/..." class="w-full bg-black/40 p-3.5 rounded-xl border border-zinc-800 text-sm focus:border-red-600 outline-none text-white transition">
+                    </div>
+                    <button onclick="saveToFirebase()" class="w-full red-gradient py-4 rounded-xl font-bold text-xs uppercase tracking-widest mt-4 transition transform active:scale-95">Bika Filime</button>
                 </div>
-                <div class="space-y-3">
-                    <h3 class="text-xs font-black uppercase opacity-50">Filime zanditse</h3>
-                    <div id="adminList" class="space-y-2 max-h-[500px] overflow-y-auto no-scrollbar"></div>
-                </div>
+            </div>
+
+            <div class="lg:col-span-3 space-y-4">
+                <h3 class="text-xs font-extrabold uppercase tracking-widest text-zinc-500 pl-2">Filime zanditse mu kamenyetso</h3>
+                <div id="adminList" class="space-y-3 max-h-[620px] overflow-y-auto no-scrollbar pr-1"></div>
             </div>
         </div>
     </section>
+
+    </main>
 
     <script>
         // Firebase Configuration
@@ -145,20 +297,26 @@
         const database = firebase.database();
 
         let allMovies = [];
+        const GENRES = ["Action","Drama","Horror","Comedy","Romance","Thriller","Animation","Documentary","Sci-Fi","Adventure"];
+        let activeGenre = 'all';
 
-        // UI Helpers
-        function startLoading() { 
+        // ---------- helpers ----------
+        function escapeHtml(str){
+            return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function startLoading(){
             const lb = document.getElementById('loading-line');
             lb.style.opacity = '1';
-            lb.style.width = '70%'; 
+            lb.style.width = '70%';
         }
-        function finishLoading() { 
+        function finishLoading(){
             const lb = document.getElementById('loading-line');
             lb.style.width = '100%';
             setTimeout(() => { lb.style.opacity = '0'; lb.style.width = '0%'; }, 300);
         }
 
-        function showPage(id) {
+        function showPage(id){
             startLoading();
             setTimeout(() => {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -169,10 +327,10 @@
             }, 300);
         }
 
-        function handleLogin() {
+        function handleLogin(){
             const u = document.getElementById('userIn').value;
             const p = document.getElementById('passIn').value;
-            if(u === "bassam" && p === "54321") {
+            if(u === "bassam" && p === "54321"){
                 showPage('admin');
                 renderAdmin();
             } else {
@@ -180,49 +338,225 @@
             }
         }
 
-        // Core Functions
+        function toggleSearch(){
+            const wrap = document.getElementById('searchWrap');
+            wrap.classList.toggle('open');
+            if(wrap.classList.contains('open')){
+                document.getElementById('searchInput').focus();
+            } else {
+                document.getElementById('searchInput').value = '';
+                searchMovies();
+            }
+        }
+
+        // nav background on scroll
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('nav-solid', window.scrollY > 40);
+        });
+
+        // ---------- Core Firebase listener ----------
         database.ref('movies').on('value', (snap) => {
             allMovies = [];
             snap.forEach(child => { allMovies.push({id: child.key, ...child.val()}); });
-            renderHome(allMovies.reverse());
+            allMovies.reverse();
+            renderHome(allMovies);
             if(document.getElementById('page-admin').classList.contains('active')) renderAdmin();
         });
 
-        function renderHome(movies) {
-            const grid = document.getElementById('movieGrid');
-            if(movies.length === 0) return;
-            grid.innerHTML = movies.map(m => `
-                <div onclick="openMovie('${m.id}')" class="group cursor-pointer">
-                    <div class="aspect-[2/3] relative rounded-[1.5rem] overflow-hidden bg-zinc-900 border border-white/5 shadow-xl">
-                        <img src="${m.poster}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" loading="lazy">
-                        <div class="play-overlay">
-                            <div class="play-btn"><i class="fa fa-play text-white"></i></div>
-                        </div>
-                    </div>
-                    <h4 class="mt-3 text-[10px] font-black uppercase text-zinc-200 truncate">${m.title}</h4>
-                    <p class="text-[8px] text-red-600 font-bold italic">${m.soba || ''}</p>
-                </div>
-            `).join('');
+        // ---------- Home: hero + chips + rows ----------
+        function renderHome(movies){
+            renderHero(movies);
+            renderChips(movies);
+            renderRows(movies);
+            // keep current filter/search applied after data refresh
+            if(activeGenre !== 'all'){
+                applyGenreFilter(activeGenre);
+            } else if(document.getElementById('searchInput').value.trim()){
+                searchMovies();
+            }
         }
 
-        function openMovie(id) {
+        function groupByGenre(movies){
+            const groups = {};
+            GENRES.forEach(g => groups[g] = []);
+            groups['Ibindi'] = [];
+            movies.forEach(m => {
+                const g = GENRES.includes(m.genre) ? m.genre : 'Ibindi';
+                groups[g].push(m);
+            });
+            return groups;
+        }
+
+        function renderChips(movies){
+            const chipBar = document.getElementById('chipBar');
+            const groups = groupByGenre(movies);
+            const present = Object.keys(groups).filter(g => groups[g].length);
+            let html = `<button class="chip ${activeGenre==='all' ? 'active':''}" role="tab" aria-selected="${activeGenre==='all'}" onclick="filterByGenre('all', this)">Byose</button>`;
+            html += present.map(g => `<button class="chip ${activeGenre===g ? 'active':''}" role="tab" aria-selected="${activeGenre===g}" onclick="filterByGenre('${g}', this)">${g}</button>`).join('');
+            chipBar.innerHTML = html;
+        }
+
+        function filterByGenre(genre, btn){
+            activeGenre = genre;
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.chip').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-selected','false'); });
+            if(btn){ btn.classList.add('active'); btn.setAttribute('aria-selected','true'); }
+            if(genre === 'all'){ showDefaultView(); return; }
+            applyGenreFilter(genre);
+        }
+
+        function applyGenreFilter(genre){
+            const groups = groupByGenre(allMovies);
+            showBrowseGrid(groups[genre] || [], `Nta filime yo mu bwoko bwa ${escapeHtml(genre)} ziboneka ubu...`);
+        }
+
+        function showDefaultView(){
+            document.getElementById('heroSection').classList.remove('hidden');
+            document.getElementById('rowsContainer').classList.remove('hidden');
+            document.getElementById('searchResults').classList.add('hidden');
+        }
+
+        function showBrowseGrid(list, emptyMsg){
+            const heroSection = document.getElementById('heroSection');
+            const rowsContainer = document.getElementById('rowsContainer');
+            const searchResults = document.getElementById('searchResults');
+            heroSection.classList.add('hidden');
+            rowsContainer.classList.add('hidden');
+            searchResults.classList.remove('hidden');
+            searchResults.innerHTML = list.length
+                ? `<div class="grid-results">${list.map(m => cardHTML(m, null)).join('')}</div>`
+                : `<div class="text-center py-16 text-zinc-500 text-sm px-4">${emptyMsg}</div>`;
+        }
+
+        function renderHero(movies){
+            const heroSection = document.getElementById('heroSection');
+            if(movies.length === 0){
+                heroSection.innerHTML = `<div class="hero"><div class="hero-bg skeleton"></div></div>`;
+                return;
+            }
+            const m = movies[0];
+            heroSection.innerHTML = `
+                <div class="hero">
+                    <div class="hero-bg" style="background-image:url('${m.poster}')"></div>
+                    <div class="hero-fade"></div>
+                    <div class="hero-content">
+                        <span class="text-red-500 text-xs font-extrabold uppercase tracking-widest mb-2 block">Ejo Bundi Byongeye</span>
+                        <h2 class="hero-title">${escapeHtml(m.title)}</h2>
+                        ${m.soba ? `<p class="hero-desc">${escapeHtml(m.soba)}</p>` : ''}
+                        <div class="flex flex-wrap gap-3 mt-6">
+                            <button onclick="openMovie('${m.id}')" class="bg-white hover:bg-zinc-200 text-black px-7 py-3 rounded-lg font-bold text-sm flex items-center gap-2 transition transform active:scale-95">
+                                <i class="fa fa-play" aria-hidden="true"></i> Reba Ubu
+                            </button>
+                            <button onclick="openMovie('${m.id}')" class="bg-zinc-700/70 hover:bg-zinc-600/80 text-white px-7 py-3 rounded-lg font-bold text-sm flex items-center gap-2 transition transform active:scale-95 border border-white/10">
+                                <i class="fa fa-circle-info" aria-hidden="true"></i> Amakuru Arambuye
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function cardHTML(m, rank){
+            return `
+                <div class="card-wrap" onclick="openMovie('${m.id}')" tabindex="0" role="button" aria-label="Reba ${escapeHtml(m.title)}" onkeydown="if(event.key==='Enter')openMovie('${m.id}')">
+                    ${rank ? `<span class="rank-num" aria-hidden="true">${rank}</span>` : ''}
+                    <div class="card">
+                        <img src="${m.poster}" alt="${escapeHtml(m.title)}" loading="lazy">
+                        <div class="card-overlay">
+                            <div class="play-btn-sm"><i class="fa fa-play" aria-hidden="true"></i></div>
+                            <p class="card-title">${escapeHtml(m.title)}</p>
+                            ${m.genre ? `<p class="text-[9px] text-red-400 font-bold uppercase tracking-wide mt-0.5">${escapeHtml(m.genre)}</p>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildRow(title, list, ranked){
+            return `
+                <div class="row">
+                    <h2 class="row-title">${title}</h2>
+                    <div class="row-track no-scrollbar">
+                        ${list.map((m,i) => cardHTML(m, ranked ? i+1 : null)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRows(movies){
+            const rowsContainer = document.getElementById('rowsContainer');
+            if(movies.length === 0){
+                rowsContainer.innerHTML = `<div class="text-center py-16 text-zinc-500 text-sm px-4">Nta filime yabonetse. Reba nyuma yaho.</div>`;
+                return;
+            }
+            const top10 = movies.slice(0, 10);
+            let html = '';
+            if(top10.length >= 3){
+                html += buildRow('Ibyakunzwe Cyane #1 Muri Rwanda Uyu Munsi', top10, true);
+            }
+            html += buildRow('Ibyongeye Vuba', movies, false);
+
+            const groups = groupByGenre(movies);
+            GENRES.concat(['Ibindi']).forEach(g => {
+                if(groups[g] && groups[g].length){
+                    html += buildRow(g, groups[g], false);
+                }
+            });
+
+            rowsContainer.innerHTML = html;
+        }
+
+        // ---------- Search ----------
+        function searchMovies(){
+            const q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            if(!q){
+                if(activeGenre !== 'all'){ applyGenreFilter(activeGenre); } else { showDefaultView(); }
+                return;
+            }
+
+            // typing a search resets the genre chip back to "Byose" visually
+            if(activeGenre !== 'all'){
+                activeGenre = 'all';
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                const allChip = document.querySelector('#chipBar .chip');
+                if(allChip) allChip.classList.add('active');
+            }
+
+            const filtered = allMovies.filter(m => m.title.toLowerCase().includes(q));
+            showBrowseGrid(filtered, "Nta filime yabonetse ihuye n'ubushakashatsi bwawe...");
+        }
+
+        // ---------- Movie details ----------
+        function openMovie(id){
             const m = allMovies.find(i => i.id === id);
             if(!m) return;
             startLoading();
-            
+
             document.getElementById('blur-bg').style.backgroundImage = `url('${m.poster}')`;
+
+            document.getElementById('detailsHeader').innerHTML = `
+                <h1 class="text-2xl md:text-4xl font-black text-white mb-2">${escapeHtml(m.title)}</h1>
+                <div class="flex items-center gap-3 flex-wrap">
+                    ${m.genre ? `<span class="genre-badge">${escapeHtml(m.genre)}</span>` : ''}
+                    ${m.soba ? `<p class="text-sm text-zinc-400">${escapeHtml(m.soba)}</p>` : ''}
+                </div>
+            `;
+
             const ytId = m.link.includes('v=') ? m.link.split('v=')[1].split('&')[0] : m.link.split('/').pop();
-            document.getElementById('trailerBox').innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+            document.getElementById('trailerBox').innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?autoplay=1" title="${escapeHtml(m.title)}" frameborder="0" allowfullscreen></iframe>`;
             document.getElementById('watchBtn').href = m.link;
             document.getElementById('downloadBtn').href = m.download;
-            
+
             showPage('details');
         }
 
-        function saveToFirebase() {
+        // ---------- Admin ----------
+        function saveToFirebase(){
             const data = {
                 title: document.getElementById('mTitle').value,
                 soba: document.getElementById('mSoba').value,
+                genre: document.getElementById('mGenre').value,
                 poster: document.getElementById('mPoster').value,
                 link: document.getElementById('mLink').value,
                 download: document.getElementById('mDL').value
@@ -231,33 +565,33 @@
             database.ref('movies').push(data).then(() => {
                 alert("Byabitswe!");
                 document.querySelectorAll('#page-admin input').forEach(i => i.value = "");
+                document.getElementById('mGenre').value = "";
             });
         }
 
-        function renderAdmin() {
+        function renderAdmin(){
             document.getElementById('adminList').innerHTML = allMovies.map(m => `
-                <div class="flex items-center justify-between glass p-3 rounded-xl border border-white/5">
-                    <div class="flex items-center gap-3">
-                        <img src="${m.poster}" class="h-8 w-6 rounded object-cover">
-                        <span class="text-[10px] font-bold uppercase truncate w-32">${m.title}</span>
+                <div class="flex items-center justify-between glass p-4 rounded-xl border border-white/10 shadow-sm hover:border-white/20 transition">
+                    <div class="flex items-center gap-4 min-w-0">
+                        <img src="${m.poster}" alt="" class="h-12 w-9 rounded-lg object-cover bg-zinc-800 border border-white/10 flex-shrink-0">
+                        <div class="min-w-0">
+                            <span class="text-xs font-bold text-white block truncate max-w-[180px] sm:max-w-xs">${escapeHtml(m.title)}</span>
+                            <span class="text-[10px] text-zinc-400 block truncate">${escapeHtml(m.soba) || 'Nta musobanuzi'}</span>
+                            ${m.genre ? `<span class="text-[9px] text-red-500 font-bold uppercase tracking-wide">${escapeHtml(m.genre)}</span>` : ''}
+                        </div>
                     </div>
-                    <button onclick="deleteMovie('${m.id}')" class="h-8 w-8 rounded-lg bg-red-600/10 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition"><i class="fa fa-trash text-xs"></i></button>
+                    <button onclick="deleteMovie('${m.id}')" aria-label="Siba ${escapeHtml(m.title)}" class="h-9 w-9 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition flex-shrink-0"><i class="fa fa-trash text-xs" aria-hidden="true"></i></button>
                 </div>
             `).join('');
         }
 
-        function deleteMovie(id) { if(confirm("Urakoze gusiba iyi filime?")) database.ref('movies/' + id).remove(); }
+        function deleteMovie(id){ if(confirm("Urakoze gusiba iyi filime?")) database.ref('movies/' + id).remove(); }
 
-        function searchMovies() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allMovies.filter(m => m.title.toLowerCase().includes(q));
-            renderHome(filtered);
-        }
-
-        function sendComment() {
+        // ---------- Comments ----------
+        function sendComment(){
             const n = document.getElementById('comName').value;
             const m = document.getElementById('comMsg').value;
-            if(!n || !m) return;
+            if(!n || !m) return alert("Uzuza neza ibikenewe!");
             database.ref('comments').push({ name: n, msg: m, date: new Date().toLocaleString() }).then(() => {
                 alert("Ubutumwa bwoherejwe!");
                 document.getElementById('comName').value = "";
