@@ -16,16 +16,27 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         
         body { 
-            background: linear-gradient(rgba(5, 5, 5, 0.9), rgba(5, 5, 5, 0.98)), url('NO.jpg');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; 
+            /* Ifoto y'inyuma igaragara neza ariko ifite aka gakingirizo k'umura (overlay) */
+            background: linear-gradient(rgba(5, 5, 5, 0.65), rgba(0, 0, 0, 0.85)), url('NO.jpg');
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
         }
 
         .page { display: none; }
         .active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .glass { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(34, 197, 94, 0.1); }
+        /* Uburyo bwa Glassmorphic Blur bugezweho */
+        .glass { 
+            background: rgba(10, 10, 10, 0.45); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
         .green-gradient { background: linear-gradient(45deg, #22c55e, #15803d); }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -44,15 +55,18 @@
         .trending-card:hover { transform: scale(1.05); border-color: #22c55e; }
 
         .cat-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
             padding: 8px 18px; border-radius: 12px; font-size: 10px; font-weight: 900;
-            text-transform: uppercase; white-space: nowrap; transition: 0.3s; color: #888;
+            text-transform: uppercase; white-space: nowrap; transition: 0.3s; color: #ccc;
         }
         .cat-btn.active-cat { background: #22c55e; color: black; border-color: #22c55e; }
 
         #notifBox {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 200; background: #0a0a0a; border: 1px solid #22c55e;
+            z-index: 200; 
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #22c55e;
             padding: 15px 25px; border-radius: 20px; display: none; width: 90%; max-width: 400px;
         }
     </style>
@@ -64,7 +78,7 @@
             <i class="fa fa-bell text-green-500 text-xl"></i>
             <div class="flex-1">
                 <p class="text-[10px] font-black uppercase tracking-wider text-green-500">Agasobanuyebox Notifications</p>
-                <p class="text-[8px] text-zinc-400">Emera kumenyeshwa film nshya zigezeho!</p>
+                <p class="text-[8px] text-zinc-300">Emera kumenyeshwa film nshya zigezeho!</p>
             </div>
             <button onclick="enableNotifs()" class="bg-green-500 text-black px-4 py-1.5 rounded-lg text-[9px] font-black uppercase">Emera</button>
         </div>
@@ -78,7 +92,7 @@
         <button onclick="showPage('login')" class="green-gradient text-black px-5 py-1.5 rounded-full text-[10px] font-black uppercase">Admin Panel</button>
     </nav>
 
-    <section id="page-home" class="page active pt-20 min-h-screen bg-black">
+    <section id="page-home" class="page active pt-20 min-h-screen bg-transparent">
         <div class="px-4 md:px-10 mt-6 text-center py-10">
             <h2 class="text-6xl md:text-8xl font-black uppercase italic leading-none tracking-tighter text-white">AGASOBANUYE<span class="text-green-500">BOX</span></h2>
             <p class="text-black text-[10px] md:text-sm font-bold uppercase mt-4 bg-green-500 w-fit px-6 py-1.5 rounded-full shadow-lg mx-auto tracking-wide">REBA FILM UNA DOWNILOADINGE KUBUNTU</p>
@@ -90,7 +104,7 @@
         </div>
 
         <div class="px-4 md:px-10 mt-8 mb-6">
-            <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." class="w-full bg-zinc-900/80 backdrop-blur-md border border-white/10 py-4 px-6 rounded-2xl text-sm outline-none focus:border-green-500 transition text-white">
+            <input type="text" id="searchInput" oninput="searchMovies()" placeholder="Shakisha filime..." class="w-full bg-zinc-950/40 backdrop-blur-md border border-white/10 py-4 px-6 rounded-2xl text-sm outline-none focus:border-green-500 transition text-white">
         </div>
 
         <div class="px-4 md:px-10 mb-8 overflow-x-auto no-scrollbar flex gap-2 py-2">
@@ -107,19 +121,19 @@
         </div>
     </section>
 
-    <section id="page-details" class="page pt-24 min-h-screen pb-20 bg-black">
+    <section id="page-details" class="page pt-24 min-h-screen pb-20 bg-transparent">
         <div class="px-4 md:px-10 max-w-7xl mx-auto">
-            <button onclick="showPage('home')" class="text-zinc-500 hover:text-green-400 mb-6 flex items-center gap-2 text-xs font-bold uppercase transition"><i class="fa fa-arrow-left"></i> Subira Inyuma</button>
+            <button onclick="showPage('home')" class="text-zinc-400 hover:text-green-400 mb-6 flex items-center gap-2 text-xs font-bold uppercase transition"><i class="fa fa-arrow-left"></i> Subira Inyuma</button>
             <div class="grid lg:grid-cols-3 gap-10">
                 <div class="lg:col-span-2 space-y-6">
-                    <div id="trailerBox" class="aspect-video w-full rounded-3xl overflow-hidden bg-zinc-950 border border-green-950/40 shadow-2xl"></div>
+                    <div id="trailerBox" class="aspect-video w-full rounded-3xl overflow-hidden bg-zinc-950/80 border border-green-950/40 shadow-2xl backdrop-blur-md"></div>
                     <div class="flex flex-wrap gap-4">
                         <a id="watchBtn" href="#" target="_blank" class="flex-1 min-w-[150px] green-gradient text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition"><i class="fa fa-play"></i> Reba Filime</a>
-                        <a id="downloadBtn" href="#" target="_blank" class="flex-1 min-w-[150px] bg-zinc-900 text-green-400 border border-green-500/20 py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition"><i class="fa fa-download"></i> Download</a>
+                        <a id="downloadBtn" href="#" target="_blank" class="flex-1 min-w-[150px] bg-zinc-900/60 backdrop-blur-md text-green-400 border border-green-500/20 py-4 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-sm shadow-xl hover:scale-[1.02] transition"><i class="fa fa-download"></i> Download</a>
                     </div>
-                    <div class="p-6 bg-zinc-950/80 rounded-3xl border border-white/5 backdrop-blur-md">
+                    <div class="p-6 glass rounded-3xl backdrop-blur-md">
                         <h2 id="detTitle" class="text-3xl font-black uppercase tracking-tighter">---</h2>
-                        <div class="flex gap-4 mt-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                        <div class="flex gap-4 mt-2 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
                             <span id="detYear">---</span>
                             <span class="text-green-500">●</span>
                             <span id="detCat">---</span>
@@ -136,55 +150,55 @@
         </div>
     </section>
 
-    <section id="page-admin" class="page pt-24 px-4 md:px-10 min-h-screen pb-20 bg-black">
+    <section id="page-admin" class="page pt-24 px-4 md:px-10 min-h-screen pb-20 bg-transparent">
         <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-10">
-            <div class="glass p-8 rounded-[2rem] h-fit border border-white/5">
+            <div class="glass p-8 rounded-[2rem] h-fit backdrop-blur-2xl">
                 <h3 class="font-black text-green-500 mb-6 uppercase text-xs text-center tracking-widest">Admin Control</h3>
                 <div class="space-y-3">
                     <input type="hidden" id="editId">
-                    <input type="text" id="mTitle" placeholder="Izina rya filime" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <input type="text" id="mSoba" placeholder="Umusobanuzi (ex: Rocky, Yanga)" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <input type="text" id="mYear" placeholder="Umwaka (ex: 2026)" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <input type="text" id="mTrailer" placeholder="YouTube Trailer Link" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <select id="mCat" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 text-zinc-400 outline-none focus:border-green-500">
+                    <input type="text" id="mTitle" placeholder="Izina rya filime" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <input type="text" id="mSoba" placeholder="Umusobanuzi (ex: Rocky, Yanga)" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <input type="text" id="mYear" placeholder="Umwaka (ex: 2026)" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <input type="text" id="mTrailer" placeholder="YouTube Trailer Link" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <select id="mCat" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 text-zinc-300 outline-none focus:border-green-500">
                         <option value="Action">Action</option>
                         <option value="Horror">Horror</option>
                         <option value="Romance">Romance</option>
                         <option value="Indian (Bollywood)">Indian (Bollywood)</option>
                         <option value="Animation">Animation</option>
                     </select>
-                    <input type="text" id="mLink" placeholder="Watch Link (Link yo kuyireba)" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <input type="text" id="mPoster" placeholder="Poster Image URL (Link y'ifoto)" class="w-full bg-black p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
-                    <div class="flex items-center gap-3 p-3 bg-zinc-900 rounded-xl border border-zinc-800">
+                    <input type="text" id="mLink" placeholder="Watch Link (Link yo kuyireba)" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <input type="text" id="mDL" placeholder="Download Link" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <input type="text" id="mPoster" placeholder="Poster Image URL (Link y'ifoto)" class="w-full bg-black/60 p-3 rounded-xl text-xs border border-zinc-800 outline-none focus:border-green-500 text-white">
+                    <div class="flex items-center gap-3 p-3 bg-black/40 rounded-xl border border-zinc-800">
                         <input type="checkbox" id="mTrending" class="w-4 h-4 accent-green-500">
                         <label class="text-[10px] font-black uppercase text-zinc-400">Trending (Shyira mu za Mbere / Hot)</label>
                     </div>
                     <button onclick="saveToFirebase()" class="w-full green-gradient text-black py-3 rounded-xl font-black uppercase text-xs tracking-wider">Bika Filime</button>
-                    <button onclick="resetForm()" class="w-full bg-zinc-800 text-zinc-400 py-3 rounded-xl font-black uppercase text-[10px]">Hagarika (Reset)</button>
+                    <button onclick="resetForm()" class="w-full bg-zinc-800 text-zinc-300 py-3 rounded-xl font-black uppercase text-[10px]">Hagarika (Reset)</button>
                 </div>
             </div>
             <div class="lg:col-span-2 space-y-3">
-                <h3 class="text-xs font-black uppercase text-zinc-400 tracking-wider mb-2">Urutonde rwa Filime zose ziri mu database</h3>
+                <h3 class="text-xs font-black uppercase text-zinc-300 tracking-wider mb-2">Urutonde rwa Filime</h3>
                 <div id="adminMovieList" class="space-y-3"></div>
             </div>
         </div>
     </section>
 
-    <section id="page-login" class="page pt-44 h-screen px-6 bg-black">
-        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] text-center border border-white/5 shadow-2xl">
+    <section id="page-login" class="page pt-44 h-screen px-6 bg-transparent">
+        <div class="max-w-md mx-auto glass p-10 rounded-[2.5rem] text-center shadow-2xl backdrop-blur-2xl">
             <h2 class="text-2xl font-black mb-8 italic text-green-500 uppercase tracking-tighter">Admin Access</h2>
-            <input type="text" id="userIn" placeholder="Username" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-2xl mb-4 text-white outline-none focus:border-green-500">
-            <input type="password" id="passIn" placeholder="Password" class="w-full bg-zinc-950 border border-zinc-800 p-4 rounded-2xl mb-4 text-white outline-none focus:border-green-500">
+            <input type="text" id="userIn" placeholder="Username" class="w-full bg-black/50 border border-zinc-800 p-4 rounded-2xl mb-4 text-white outline-none focus:border-green-500">
+            <input type="password" id="passIn" placeholder="Password" class="w-full bg-black/50 border border-zinc-800 p-4 rounded-2xl mb-4 text-white outline-none focus:border-green-500">
             <button onclick="handleLogin()" class="w-full green-gradient text-black py-4 rounded-2xl font-black uppercase shadow-lg tracking-wider">Injira</button>
         </div>
     </section>
 
-    <footer class="mt-20 py-12 px-6 md:px-10 border-t border-zinc-900 bg-zinc-950">
+    <footer class="mt-20 py-12 px-6 md:px-10 border-t border-zinc-900 bg-black/40 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
             <div class="h-12 w-12 bg-green-500 text-black rounded-xl flex items-center justify-center font-black italic text-2xl mb-4 shadow-xl">AB</div>
             <h2 class="text-xl font-black uppercase tracking-tighter mb-4 text-white">AGASOBANUYE<span class="text-green-500">BOX</span></h2>
-            <p class="text-[9px] font-black uppercase text-zinc-600">&copy; 2026 AGASOBANUYEBOX. BY PACIFIQUE.</p>
+            <p class="text-[9px] font-black uppercase text-zinc-500">&copy; 2026 AGASOBANUYEBOX. BY PACIFIQUE.</p>
         </div>
     </footer>
 
@@ -223,6 +237,7 @@
             else alert("Password ntabwo ariyo!");
         }
 
+        // DATABASE LISTENER
         database.ref('movies').on('value', (snap) => {
             allMovies = [];
             snap.forEach((c) => { allMovies.push({ id: c.key, ...c.val() }); });
@@ -249,13 +264,13 @@
                     </div>
                 `).join('');
             } else {
-                trendingGrid.innerHTML = `<p class="text-xs text-zinc-600 font-bold col-span-full uppercase py-4">Nta film za Hot zirahitwamo...</p>`;
+                trendingGrid.innerHTML = `<p class="text-xs text-zinc-500 font-bold col-span-full uppercase py-4">Nta film za Hot zirahitwamo...</p>`;
             }
 
             if(data.length > 0) {
                 grid.innerHTML = data.map(m => `
                     <div onclick="openMovie('${m.id}')" class="group cursor-pointer">
-                        <div class="aspect-[2/3] relative rounded-[1.5rem] overflow-hidden border border-zinc-900 bg-zinc-900">
+                        <div class="aspect-[2/3] relative rounded-[1.5rem] overflow-hidden border border-zinc-900 bg-zinc-900/60 backdrop-blur-sm">
                             <img src="${m.poster || 'b.png'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         </div>
                         <div class="mt-3">
@@ -265,7 +280,7 @@
                     </div>
                 `).join('');
             } else {
-                grid.innerHTML = `<p class="text-xs text-zinc-600 font-bold col-span-full text-center uppercase py-10">Nta film ziri mu database ubu...</p>`;
+                grid.innerHTML = `<p class="text-xs text-zinc-500 font-bold col-span-full text-center uppercase py-10">Nta film ziri mu database ubu...</p>`;
             }
         }
 
@@ -281,11 +296,11 @@
             const videoId = m.trailer ? m.trailer.split('v=')[1]?.split('&')[0] || m.trailer.split('/').pop() : '';
             document.getElementById('trailerBox').innerHTML = m.trailer ? 
                 `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>` : 
-                `<div class="w-full h-full flex items-center justify-center text-zinc-700 font-black uppercase">Nta Trailer Ihari</div>`;
+                `<div class="w-full h-full flex items-center justify-center text-zinc-500 font-black uppercase">Nta Trailer Ihari</div>`;
 
             let related = allMovies.filter(item => item.id !== id && item.category === m.category).slice(0, 5);
             document.getElementById('relatedGrid').innerHTML = related.map(r => `
-                <div onclick="openMovie('${r.id}')" class="flex gap-4 p-2 hover:bg-white/5 rounded-xl cursor-pointer">
+                <div onclick="openMovie('${r.id}')" class="flex gap-4 p-2 hover:bg-white/5 glass rounded-xl cursor-pointer backdrop-blur-md">
                     <img src="${r.poster || 'b.png'}" class="h-16 w-12 rounded-lg object-cover">
                     <div>
                         <p class="text-[9px] font-black uppercase text-white">${r.title}</p>
@@ -318,42 +333,45 @@
             sliderInterval = setInterval(() => {
                 if (slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth) slider.scrollLeft = 0;
                 else slider.scrollLeft += 200;
-            }, 3000); // 3 seconds is smoother for standard viewers
+            }, 3000);
         }
 
+        // BACKEND CONTROL: Nkosorera ya set() ifite Error Handling
         function saveToFirebase() {
             const id = document.getElementById('editId').value;
-            const data = {
-                title: document.getElementById('mTitle').value,
-                soba: document.getElementById('mSoba').value,
-                year: document.getElementById('mYear').value,
-                trailer: document.getElementById('mTrailer').value,
-                category: document.getElementById('mCat').value,
-                link: document.getElementById('mLink').value,
-                download: document.getElementById('mDL').value,
-                poster: document.getElementById('mPoster').value,
-                isTrending: document.getElementById('mTrending').checked
-            };
-
-            if(!data.title) {
+            const titleVal = document.getElementById('mTitle').value.trim();
+            
+            if(!titleVal) {
                 alert("Ugomba kwandika Izina rya Filime nibura!");
                 return;
             }
 
+            const data = {
+                title: titleVal,
+                soba: document.getElementById('mSoba').value.trim() || "Agasobanuye",
+                year: document.getElementById('mYear').value.trim() || "2026",
+                trailer: document.getElementById('mTrailer').value.trim() || "",
+                category: document.getElementById('mCat').value,
+                link: document.getElementById('mLink').value.trim() || "#",
+                download: document.getElementById('mDL').value.trim() || "#",
+                poster: document.getElementById('mPoster').value.trim() || "b.png",
+                isTrending: document.getElementById('mTrending').checked
+            };
+
             if(id) {
-                database.ref('movies/' + id).update(data)
+                database.ref('movies/' + id).set(data)
                     .then(() => { resetForm(); alert("Filime yavuguruwe neza kuri Frontend!"); })
-                    .catch(err => alert("Ikibazo: " + err.message));
+                    .catch(err => alert("Firebase yanze guhindura: " + err.message));
             } else {
-                database.ref('movies').push(data)
+                database.ref('movies').push().set(data)
                     .then(() => { resetForm(); alert("Filime nshya yahise ijya kuri Frontend pee!"); })
-                    .catch(err => alert("Ikibazo: " + err.message));
+                    .catch(err => alert("Firebase yanze kubika: " + err.message));
             }
         }
 
         function renderAdmin() {
             document.getElementById('adminMovieList').innerHTML = allMovies.map(m => `
-                <div class="flex items-center justify-between glass p-3 rounded-xl border border-white/5">
+                <div class="flex items-center justify-between glass p-3 rounded-xl backdrop-blur-md">
                     <div class="flex items-center gap-4 text-[9px] font-black uppercase">
                         <img src="${m.poster || 'b.png'}" class="h-10 w-8 object-cover rounded bg-zinc-800">
                         <div>
@@ -386,7 +404,7 @@
         }
 
         function deleteMovie(id) { 
-            if(confirm("Ese urashaka gusiba iyi filime burundu muri amaseva no kuri Frontend?")) {
+            if(confirm("Ese urashaka gusiba iyi filime burundu?")) {
                 database.ref('movies/' + id).remove()
                     .then(() => alert("Iyahise isibika ako kanya!"));
             }
