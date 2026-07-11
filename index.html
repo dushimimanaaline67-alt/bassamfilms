@@ -30,13 +30,6 @@
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        .skeleton {
-            background: linear-gradient(90deg, #14532d 25%, #166534 50%, #14532d 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        @keyframes loading { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-
         #trendingGrid { scroll-behavior: smooth; }
 
         @media (max-width: 640px) {
@@ -93,8 +86,7 @@
 
         <div id="trendingSection" class="px-4 md:px-10 mb-10">
             <h3 class="text-green-500 font-black italic mb-4 uppercase text-xs tracking-widest flex items-center gap-2"><i class="fa fa-bolt"></i> HOT MOVIES (TRENDING)</h3>
-            <div id="trendingGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 no-scrollbar">
-                </div>
+            <div id="trendingGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 no-scrollbar"></div>
         </div>
 
         <div class="px-4 md:px-10 mt-8 mb-6">
@@ -102,17 +94,16 @@
         </div>
 
         <div class="px-4 md:px-10 mb-8 overflow-x-auto no-scrollbar flex gap-2 py-2">
-            <button onclick="filterMovies('all')" class="cat-btn active-cat">Zose</button>
-            <button onclick="filterMovies('Action')" class="cat-btn">Action</button>
-            <button onclick="filterMovies('Horror')" class="cat-btn">Horror</button>
-            <button onclick="filterMovies('Romance')" class="cat-btn">Romance</button>
-            <button onclick="filterMovies('Indian (Bollywood)')" class="cat-btn">Indian</button>
-            <button onclick="filterMovies('Animation')" class="cat-btn">Animation</button>
+            <button onclick="filterMovies('all', event)" class="cat-btn active-cat">Zose</button>
+            <button onclick="filterMovies('Action', event)" class="cat-btn">Action</button>
+            <button onclick="filterMovies('Horror', event)" class="cat-btn">Horror</button>
+            <button onclick="filterMovies('Romance', event)" class="cat-btn">Romance</button>
+            <button onclick="filterMovies('Indian (Bollywood)', event)" class="cat-btn">Indian</button>
+            <button onclick="filterMovies('Animation', event)" class="cat-btn">Animation</button>
         </div>
 
         <div class="px-4 md:px-10 pb-24">
-            <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                </div>
+            <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"></div>
         </div>
     </section>
 
@@ -198,7 +189,6 @@
     </footer>
 
     <script>
-        // CONFIGURATION YACU IYUNGANIWE NEZA
         const firebaseConfig = {
             apiKey: "AIzaSyDWEpgmO7OdjgRG3x-AsGDTrZCepZf1wPg",
             authDomain: "agasobanuyebox-6a6e8.firebaseapp.com",
@@ -213,7 +203,6 @@
         const database = firebase.database();
         let allMovies = [];
 
-        // Switching View Controller
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${id}`).classList.add('active');
@@ -234,22 +223,19 @@
             else alert("Password ntabwo ariyo!");
         }
 
-        // DATABASE LISTENER: Iziha amakuru Frontend na Admin Panel icyarimwe (Realtime)
         database.ref('movies').on('value', (snap) => {
             allMovies = [];
             snap.forEach((c) => { allMovies.push({ id: c.key, ...c.val() }); });
-            allMovies.reverse(); // Ziza zihera ku nshya cyane
+            allMovies.reverse(); 
             renderHome(allMovies);
             renderAdmin();
             startAutoSlider();
         });
 
-        // FRONTEND ENGINE: Kugaragaza amakuru kuri Home Page
         function renderHome(data) {
             const grid = document.getElementById('movieGrid');
             const trendingGrid = document.getElementById('trendingGrid');
 
-            // 1. Render Trending (Hot Movies)
             const trendingMovies = data.filter(m => m.isTrending);
             if(trendingMovies.length > 0) {
                 trendingGrid.innerHTML = trendingMovies.map(m => `
@@ -266,7 +252,6 @@
                 trendingGrid.innerHTML = `<p class="text-xs text-zinc-600 font-bold col-span-full uppercase py-4">Nta film za Hot zirahitwamo...</p>`;
             }
 
-            // 2. Render Grid (Zose zikurikirana)
             if(data.length > 0) {
                 grid.innerHTML = data.map(m => `
                     <div onclick="openMovie('${m.id}')" class="group cursor-pointer">
@@ -284,7 +269,6 @@
             }
         }
 
-        // WATCH SECTION ENGINE
         function openMovie(id) {
             const m = allMovies.find(item => item.id === id);
             document.getElementById('detTitle').innerText = m.title;
@@ -312,10 +296,12 @@
             showPage('details');
         }
 
-        function filterMovies(cat) {
+        function filterMovies(cat, event) {
             const btns = document.querySelectorAll('.cat-btn');
             btns.forEach(b => b.classList.remove('active-cat'));
-            event.target.classList.add('active-cat');
+            if(event && event.target) {
+                event.target.classList.add('active-cat');
+            }
             if(cat === 'all') renderHome(allMovies);
             else renderHome(allMovies.filter(m => m.category === cat));
         }
@@ -332,10 +318,9 @@
             sliderInterval = setInterval(() => {
                 if (slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth) slider.scrollLeft = 0;
                 else slider.scrollLeft += 200;
-            }, 1000);
+            }, 3000); // 3 seconds is smoother for standard viewers
         }
 
-        // BACKEND CONTROLLER: Bika, Edit na Delete bikora neza "pee"
         function saveToFirebase() {
             const id = document.getElementById('editId').value;
             const data = {
@@ -356,12 +341,10 @@
             }
 
             if(id) {
-                // Iyo turi gu-updatinga iyari isanzweho
                 database.ref('movies/' + id).update(data)
                     .then(() => { resetForm(); alert("Filime yavuguruwe neza kuri Frontend!"); })
                     .catch(err => alert("Ikibazo: " + err.message));
             } else {
-                // Iyo turi gushyiraho nshya
                 database.ref('movies').push(data)
                     .then(() => { resetForm(); alert("Filime nshya yahise ijya kuri Frontend pee!"); })
                     .catch(err => alert("Ikibazo: " + err.message));
@@ -399,7 +382,6 @@
             document.getElementById('mPoster').value = m.poster || '';
             document.getElementById('mTrending').checked = m.isTrending || false;
             
-            // Kuzamura paje hejuru kuri form ngo umubone uze guhindura
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
